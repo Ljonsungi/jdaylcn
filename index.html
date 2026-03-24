@@ -1,0 +1,2513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- PWA -->
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#2d6a4f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="JDay LCN">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>JDayLCN bby Pharaïon Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ── Palette claire ── */
+  --bg:        #f5f0e8;
+  --surface:   #fffdf8;
+  --surface1:  #2d6a3b;
+  --surface2:  #fffdf8;
+  --surface3:  #fffab1;
+  --border:    #d6cfc0;
+  --text:      #1a1a16;
+  --text2:     #000000;
+  --text3:     #b6da42;
+  --green:     #2d6a4f;
+  --green-l:   #52b788;
+  --green-bg:  #d8f3dc;
+  --rose:      #c9184a;
+  --jasmin:    #e9c46a;
+  --accent:    #2d6a4f;
+  --shadow:    0 2px 16px rgba(45,106,79,0.10);
+  --shadow-lg: 0 8px 32px rgba(45,106,79,0.15);
+  /* ── Couleurs urgence événements ── */
+  --urgent-red:    #ef4444;
+  --urgent-orange: #f97316;
+  --urgent-green:  #22c55e;
+  /* ── Stats ── */
+  --stat-bar-bg: #e5e7eb;
+}
+/* ═══ MODE SOMBRE ═══ */
+body.dark {
+  --bg:        #0f1a14;
+  --surface:   #1a2d22;
+  --surface1:  #1e373a;
+  --surface2:  #1a2d22;
+  --surface3:  #1a3a27;
+  --border:    #2d4a38;
+  --text:      #e8f0eb;
+  --text2:     #8aab94;
+  --green:     #52b788;
+  --green-l:   #74c69d;
+  --green-bg:  #1a3a28;
+  --rose:      #f87171;
+  --jasmin:    #fbbf24;
+  --shadow:    0 2px 16px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+  --stat-bar-bg: #2d4a38;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+/* ─── PAGES ─── */
+.page { display: none; min-height: 100vh; }
+.page.active { display: flex; flex-direction: column; }
+/* ═══════════════════════════════
+   PAGE 0 — ACCUEIL
+═══════════════════════════════ */
+#page-home {
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+.home-bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.12;
+  pointer-events: none;
+}
+.home-bg-circle.c1 {
+  width: 320px; height: 320px;
+  background: var(--green);
+  top: -80px; right: -80px;
+}
+.home-bg-circle.c2 {
+  width: 200px; height: 200px;
+  background: var(--jasmin);
+  top: 300px; left: -30px;
+}
+.home-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 28px 32px;
+  position: relative;
+  z-index: 1;
+}
+.home-logo {
+  margin-bottom: 8px;
+}
+.home-logo-icon {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 6px;
+  display: block;
+  animation: sway 3s ease-in-out infinite;
+}
+@keyframes sway {
+  0%,100% { transform: rotate(-4deg); }
+  50%      { transform: rotate(4deg); }
+}
+.home-logo-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.home-logo-sub {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+.home-date-block {
+  margin: 24px 0 0;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.home-date-full {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--green);
+  line-height: 1;
+  text-align:center;
+}
+.home-phrase {
+  margin: 20px 0 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.4;
+  padding: 0 4px;
+}
+
+.home-buttons {
+  /*margin-top: 3rem;*/
+  padding-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.home-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.home-btn:active { transform: scale(0.97); }
+
+.home-btn.primary {
+  background: var(--surface1);
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(45,106,79,0.35);
+}
+.home-btn.secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.home-btn.tertiary {
+  background: var(--surface3);
+  /*color: var(--text2);*/
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.btn-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.btn-texts { flex: 1; }
+.btn-title { display: block; }
+.btn-sub { display: block; font-size: 0.72rem; font-weight: 400; opacity: 0.7; margin-top: 2px; }
+.btn-arrow { font-size: 1.1rem; opacity: 0.5; }
+/* ═══════════════════════════════
+   PAGE HEADER (formulaire + historique)
+═══════════════════════════════ */
+.page-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 20px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.back-btn {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.page-header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--green);
+  font-weight: 700;
+}
+/* ═══════════════════════════════
+   PAGE 1 — FORMULAIRE
+═══════════════════════════════ */
+#page-form .form-body {
+  padding: 20px 18px 100px;
+  flex: 1;
+  overflow-y: auto;
+}
+.form-section-title {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text2);
+  margin: 20px 0 10px;
+}
+.form-section-title:first-child { margin-top: 0; }
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.form-row.single { grid-template-columns: 1fr; }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.form-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text2);
+  padding-left: 2px;
+}
+.form-input, .form-select, .form-textarea {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(45,106,79,0.12);
+}
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7060' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+.form-textarea {
+  resize: none;
+  min-height: 80px;
+}
+.form-input[readonly] {
+  background: var(--surface2);
+  color: var(--green);
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-align: center;
+}
+/* Meteo pills */
+.meteo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.meteo-pill {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 1.3rem;
+}
+.meteo-pill .meteo-label { font-size: 0.55rem; color: var(--text2); font-weight: 500; margin-top: 3px; display: block; }
+.meteo-pill.active { border-color: var(--green); background: var(--green-bg); }
+/* Stepper */
+.stepper {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.step-btn {
+  width: 44px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  color: var(--green);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  flex-shrink: 0;
+}
+.step-btn:active { background: var(--green-bg); }
+.step-val {
+  flex: 1;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Total heures display */
+.total-display {
+  background: var(--green-bg);
+  border: 1.5px solid var(--green-l);
+  border-radius: 12px;
+  padding: 12px 14px;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--green);
+}
+.total-display .total-label {
+  font-size: 0.65rem;
+  color: var(--text2);
+  font-weight: 500;
+  display: block;
+  margin-top: 2px;
+}
+
+/* Submit */
+.form-submit {
+  position: fixed;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 430px;
+  padding: 12px 18px 24px;
+  background: linear-gradient(to top, var(--bg) 80%, transparent);
+  z-index: 40;
+}
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(45,106,79,0.35);
+  transition: transform 0.15s;
+}
+.submit-btn:active { transform: scale(0.98); }
+
+/* ═══════════════════════════════
+   PAGE 2 — HISTORIQUE
+═══════════════════════════════ */
+#page-history .hist-body {
+  padding: 16px 18px 100px;
+  flex: 1;
+}
+#hist-days-list{
+	padding-bottom:40px;
+}
+/* Month selector */
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+.month-nav-btn {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.month-nav-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--green);
+}
+
+/* Month total */
+.month-total-card {
+  background: var(--green);
+  color: #fff;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.month-total-label { font-size: 0.75rem; opacity: 0.8; }
+.month-total-val { font-size: 1.8rem; font-weight: 700; font-family: 'Playfair Display', serif; }
+.month-total-sub { font-size: 0.68rem; opacity: 0.7; margin-top: 2px; }
+
+/* Day list */
+.day-entry {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.day-entry:active { box-shadow: var(--shadow-lg); }
+.day-entry-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  gap: 12px;
+  cursor: pointer;
+}
+.day-num {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--green-bg);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--green);
+  flex-shrink: 0;
+}
+.day-num.empty { background: var(--surface2); color: var(--text2); }
+.day-info { flex: 1; }
+.day-info-title { font-size: 0.88rem; font-weight: 600; }
+.tacheTitre{color:#cb0000;font-size: 0.95rem;font-weight: 400;}
+.day-info-sub { font-size: 0.7rem; color: var(--text2); margin-top: 2px; }
+.day-total-h {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--green);
+  flex-shrink: 0;
+}
+.day-total-h.zero { color: var(--border); }
+
+/* Expanded entry */
+.day-entry-detail {
+  display: none;
+  padding: 0 14px 14px;
+  border-top: 1px solid var(--border);
+}
+.day-entry-detail.open { display: block; }
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+.detail-item { }
+
+/* ═══ MULTI-ZONE ═══ */
+.zone-list { display:flex; flex-direction:column; gap:8px; }
+.zone-row { display:flex; align-items:center; gap:8px; }
+.zone-row .form-input { flex:1; margin:0; }
+.zone-remove-btn { width:34px; height:34px; flex-shrink:0; background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; color:var(--rose); font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.zone-add-btn { display:flex; align-items:center; gap:6px; padding:8px 14px; background:var(--green-bg); color:var(--green); border:1.5px solid var(--green); border-radius:10px; font-family:'Outfit',sans-serif; font-size:0.82rem; font-weight:700; cursor:pointer; margin-top:8px; width:100%; justify-content:center; }
+.zone-add-btn:disabled { opacity:0.4; cursor:not-allowed; }
+/* ═══ TABLEAU CROISÉ TÂCHE × LIEU ═══ */
+.cross-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.cross-table { width:100%; border-collapse:collapse; font-size:0.72rem; }
+.cross-table th { background:var(--green); color:#fff; padding:6px 8px; text-align:center; white-space:nowrap; position:sticky; top:0; }
+.cross-table th:first-child { text-align:left; position:sticky; left:0; z-index:2; }
+.cross-table td { padding:5px 8px; border-bottom:1px solid var(--border); text-align:center; }
+.cross-table td:first-child { text-align:left; font-weight:600; background:var(--surface); position:sticky; left:0; white-space:nowrap; }
+.cross-table tr:nth-child(even) td { background:var(--surface2); }
+.cross-table tr:nth-child(even) td:first-child { background:var(--surface); }
+.cross-table .cross-total { font-weight:700; color:var(--green); }
+.cross-table-section { margin-top:14px; }
+/* ═══ BADGES PRÉCIP ═══ */
+.precip-badge { display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700; padding:2px 6px; border-radius:20px; margin-left:5px; }
+.precip-badge.forecast  { background:#fef3c7; color:#d97706; }
+.precip-badge.confirmed { background:#d1fae5; color:#059669; }
+
+/* ═══ RECHERCHE HISTORIQUE ═══ */
+.search-bar { display:flex; gap:8px; margin-bottom:14px; }
+.search-input { flex:1; padding:10px 14px; border:1.5px solid var(--border); border-radius:12px; background:var(--surface); color:var(--text); font-family:'Outfit',sans-serif; font-size:0.9rem; }
+.search-input:focus { outline:none; border-color:var(--green); }
+
+/* ═══ PAGE EVENTS ═══ */
+.event-form-card { background:var(--surface); border:1.5px solid var(--border); border-radius:16px; padding:16px 18px; margin-bottom:16px; }
+.event-list { display:flex; flex-direction:column; gap:10px; padding-bottom:40px; }
+.event-card { background:var(--surface); border:1.5px solid var(--border); border-radius:14px; padding:14px 16px; display:flex; align-items:center; gap:14px; }
+.event-card.urgent-red   { border-color:var(--urgent-red);    background:#fff5f5; }
+.event-card.urgent-orange{ border-color:var(--urgent-orange); background:#fff8f0; }
+.event-card.urgent-green { border-color:var(--urgent-green);  background:#f0fdf4; }
+body.dark .event-card.urgent-red   { background:#2a1515; }
+body.dark .event-card.urgent-orange{ background:#2a1e10; }
+body.dark .event-card.urgent-green { background:#0f2a18; }
+.event-date-badge { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text2); margin-bottom:2px; }
+.event-label { font-size:0.92rem; font-weight:600; }
+.event-countdown { margin-left:auto; text-align:center; min-width:56px; }
+.event-days-num { font-size:1.4rem; font-weight:800; line-height:1; }
+.event-days-label { font-size:0.6rem; text-transform:uppercase; font-weight:600; letter-spacing:0.08em; color:var(--text2); }
+.event-delete-btn { color:var(--rose); cursor:pointer; font-size:1.1rem; padding:4px 8px; opacity:0.7; }
+.event-delete-btn:hover { opacity:1; }
+
+/* ═══ PAGE STATISTIQUES ═══ */
+.stat-page-body { padding:16px 18px 30px; overflow-y:auto; flex:1; }
+/* Filtre période */
+.stat-filter { display:flex; gap:8px; margin-bottom:20px; }
+.stat-filter-btn { flex:1; padding:9px; border:1.5px solid var(--border); border-radius:10px; background:var(--surface); color:var(--text2); font-family:'Outfit',sans-serif; font-size:0.82rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.stat-filter-btn.active { background:var(--green); color:#fff; border-color:var(--green); }
+/* Sections */
+.stat-section { margin-bottom:22px; }
+.stat-section-title { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--text2); margin-bottom:10px; padding-left:2px; }
+/* Cartes KPI */
+.stat-kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:0; }
+.stat-kpi-card { background:var(--surface); border:1.5px solid var(--border); border-radius:14px; padding:14px 16px; text-align:center; }
+.stat-kpi-label { font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text2); font-weight:600; margin-bottom:4px; }
+.stat-kpi-val { font-size:1.6rem; font-weight:800; color:var(--green); line-height:1.1; }
+.stat-kpi-sub { font-size:0.72rem; color:var(--text2); margin-top:3px; }
+/* Graphique barres */
+.stat-chart-card { background:var(--surface); border:1.5px solid var(--border); border-radius:14px; padding:16px 18px; }
+.stat-bar-row { display:flex; align-items:center; /*gap:10px;*/ margin-bottom:10px; }
+.stat-bar-row:last-child { margin-bottom:0; }
+.stat-bar-label { font-size:0.8rem; font-weight:500; width:100px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.stat-bar-wrap { flex:1; height:22px; background:var(--stat-bar-bg); border-radius:6px; overflow:hidden; margin: 0 10px 0 5px}
+.stat-bar-fill { height:100%; background:var(--green); border-radius:6px; transition:width 0.6s ease; display:flex; align-items:center; justify-content:flex-end; padding-right:6px; }
+.stat-bar-pct { font-size:0.68rem; font-weight:700; color:#fff; white-space:nowrap; }
+.stat-bar-pct-outside { font-size:0.75rem; font-weight:600; color:var(--text2); text-align:right; }
+/* Météo répartition */
+.stat-meteo-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.stat-meteo-chip { background:var(--surface); border:1.5px solid var(--border); border-radius:12px; padding:10px 8px; text-align:center; }
+.stat-meteo-emoji { font-size:1.4rem; }
+.stat-meteo-count { font-size:1rem; font-weight:700; color:var(--green); }
+.stat-meteo-label { font-size:0.62rem; color:var(--text2); margin-top:1px; }
+
+/* ═══ DARK TOGGLE ═══ */
+.dark-toggle-row { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; background:var(--surface); border:1.5px solid var(--border); border-radius:14px; margin-bottom:12px; }
+.dark-toggle-label { font-size:0.9rem; font-weight:600; }
+.toggle-switch { position:relative; width:46px; height:26px; }
+.toggle-switch input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; inset:0; background:var(--border); border-radius:26px; cursor:pointer; transition:0.3s; }
+.toggle-slider:before { content:''; position:absolute; width:20px; height:20px; left:3px; top:3px; background:#fff; border-radius:50%; transition:0.3s; }
+.toggle-switch input:checked + .toggle-slider { background:var(--green); }
+.toggle-switch input:checked + .toggle-slider:before { transform:translateX(20px); }
+
+/* ═══ SÉLECTEUR DE PÉRIODE (stats) ═══ */
+.stat-picker { display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1.5px solid var(--border); border-radius:12px; padding:8px 12px; margin-bottom:16px; }
+.stat-picker-nav { background:none; border:none; font-size:1.4rem; color:var(--green); cursor:pointer; padding:0 8px; font-weight:700; line-height:1; }
+.stat-picker-label { font-size:0.92rem; font-weight:700; color:var(--text); text-align:center; flex:1; }
+
+/* ═══ MÉTÉO AUTO ═══ */
+.meteo-fetch-btn { display:flex; align-items:center; gap:6px; padding:8px 8px; background:var(--green-bg); color:var(--green); border:1.5px solid var(--green); border-radius:10px; font-family:'Outfit',sans-serif; font-size:0.82rem; font-weight:700; cursor:pointer; margin-top:8px; }
+.day-group { border:1.5px solid var(--border); border-radius:16px; margin-bottom:10px; overflow:hidden; background:var(--surface); }
+.day-group-header { display:flex; align-items:center; gap:12px; padding:13px 14px; cursor:pointer; }
+.day-group-header:active { background:var(--surface2); }
+.day-group-entries { display:none; border-top:1px solid var(--border); }
+.day-group-entries.open { display:block; }
+.day-group-entry { border-bottom:1px solid var(--border); }
+.day-group-entry:last-child { border-bottom:none; }
+.day-group-entry-header { display:flex; align-items:center; gap:10px; padding:11px 14px; cursor:pointer; background:var(--surface2); }
+.badge-count { background:var(--green); color:#fff; font-size:0.65rem; font-weight:700; padding:2px 7px; border-radius:20px; margin-left:6px; }
+.day-group-total { font-size:0.85rem; font-weight:700; color:var(--green); margin-left:auto; white-space:nowrap; }
+.entry-num { font-size:0.7rem; font-weight:700; color:var(--text2); background:var(--border); border-radius:6px; padding:2px 6px; }
+.detail-item-label { font-size: 0.62rem; color: var(--text2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.detail-item-val { font-size: 0.85rem; font-weight: 600; margin-top: 2px; }
+.detail-notes {
+  grid-column: 1 / -1;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  color: var(--text2);
+  font-style: italic;
+  margin-top: 4px;
+}
+.detail-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.detail-btn {
+  flex: 1;
+  padding: 9px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  text-align: center;
+}
+.detail-btn.danger { border-color: #fca5a5; color: var(--rose); background: #fff1f2; }
+
+/* Export btn */
+.export-bar {
+  position: fixed;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 400px;
+  padding: 12px 18px 24px;
+  background: linear-gradient(to top, var(--bg) 80%, transparent);
+  z-index: 40;
+}
+.export-btn-main {
+  width: 100%;
+  padding: 16px;
+  background: var(--surface);
+  border: 2px solid var(--green);
+  color: var(--green);
+  border-radius: 16px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.export-btn-main:active { background: var(--green); color: #fff; transform: scale(0.98); }
+
+/* ═══════════════════════════════
+   TOAST & MODAL
+═══════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%; transform: translateX(-50%) translateY(10px);
+  background: var(--green);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 40px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 999;
+  white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(45,106,79,0.35);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Chips culture color */
+.chip-jasmin   { color: #b5850a; background: #fef9e7; border-color: #f0c04a; }
+.chip-rosiers  { color: var(--rose); background: #fff1f2; border-color: #fca5a5; }
+.chip-vignes   { color: #6d28d9; background: #f5f3ff; border-color: #c4b5fd; }
+.chip-oliviers { color: #065f46; background: #ecfdf5; border-color: #6ee7b7; }
+.chip-tubereuses { color: #9d174d; background: #fdf2f8; border-color: #f9a8d4; }
+</style>
+</head>
+<body>
+<!-- ══════════════════════════════
+     PAGE ACCUEIL
+══════════════════════════════ -->
+<div class="page active" id="page-home">
+ 
+  <div class="home-content">
+    <div class="home-logo">
+      <div style="position:relative;height:200px;border-radius:20px;overflow:hidden;margin-bottom:0;">
+        <!-- PHOTO -->
+        <img src="./rose1.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center;">
+        <!-- OVERLAY -->
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,0.5));"></div>
+        <!-- LOGO + TITRE -->
+        <div style="position:absolute;bottom:16px;left:18px;">
+          <span class="home-logo-icon">🌿</span>
+          <div class="home-logo-name">JDay LCN</div>
+          <div class="home-logo-sub">Gestion agricole</div>
+        </div>
+      </div>
+    </div>
+    <div class="home-date-block">
+      <div class="home-date-full" id="home-date-full"></div>
+    </div>
+    <div class="home-phrase" id="home-phrase"></div>
+    <div class="home-buttons">
+      <button class="home-btn primary" onclick="newEntry()">
+        <div class="btn-icon">📝</div>
+        <div class="btn-texts">
+          <span class="btn-title">Saisie du jour</span>
+          <span class="btn-sub">Remplir la fiche journalière</span>
+        </div>
+        <span class="btn-arrow">›</span>
+      </button>
+      <button class="home-btn secondary" onclick="goTo('page-history')">
+        <div class="btn-icon">📋</div>
+        <div class="btn-texts">
+          <span class="btn-title">Historique</span>
+          <span class="btn-sub">Consulter & exporter par mois</span>
+        </div>
+        <span class="btn-arrow">›</span>
+      </button>
+      <button class="home-btn secondary" onclick="goTo('page-events')">
+        <div class="btn-icon">📅</div>
+        <div class="btn-texts">
+          <span class="btn-title">Événements à venir</span>
+          <span class="btn-sub">Planification & rappels</span>
+        </div>
+        <span class="btn-arrow">›</span>
+      </button>
+      <button class="home-btn secondary" onclick="goTo('page-stats')">
+        <div class="btn-icon">📊</div>
+        <div class="btn-texts">
+          <span class="btn-title">Statistiques</span>
+          <span class="btn-sub">Analyse & récapitulatif</span>
+        </div>
+        <span class="btn-arrow">›</span>
+      </button>
+      <button class="home-btn tertiary" onclick="goTo('page-settings')">
+        <div class="btn-icon">⚙️</div>
+        <div class="btn-texts">
+          <span class="btn-title">Paramètres</span>
+          <span class="btn-sub">Sauvegarde & restauration des données</span>
+        </div>
+        <span class="btn-arrow">›</span>
+      </button>
+    </div>
+  </div>
+</div>
+<!-- ══════════════════════════════
+     PAGE FORMULAIRE
+══════════════════════════════ -->
+<div class="page" id="page-form">
+  <div class="page-header">
+    <div class="back-btn" onclick="safeBack()">←</div>
+    <div class="page-header-title" id="form-page-title">📝 Saisie du jour</div>
+  </div>
+  <div class="form-body">
+    <!-- DATE -->
+    <div class="form-section-title">📅 Date</div>
+    <div class="form-row single">
+      <div class="form-group">
+        <input type="date" class="form-input" id="f-date">
+      </div>
+    </div>
+    <!-- LIEU + MÉTÉO -->
+    <div class="form-section-title">📍 Lieu & Météo</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Lieu</label>
+        <select class="form-select" id="f-lieu">
+          <option value="">— Choisir —</option>
+          <option>Château</option>
+          <option>Callian</option>
+          <option>Montauroux</option>
+          <option>Mas Ricardenque</option>
+          <option>Clos Notre Dame</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Météo</label>
+        <select class="form-select" id="f-meteo">
+          <option value="">— Choisir —</option>
+          <option>☀️ Grand beau</option>
+          <option>⛅ Nuageux</option>
+          <option>🌧️ Pluie</option>
+          <option>💨 Vent</option>
+          <option>🌧️💨 Pluie + vent</option>
+          <option>⛈️ Orageux</option>
+          <option>🌨️ Grêle</option>
+        </select>
+      </div>
+    </div>
+    <!-- PRÉCIPITATION + ARROSAGE (toujours visible) -->
+    <div class="form-row" id="precipitation-row">
+      <div class="form-group">
+        <label class="form-label">💧 Arrosage (L)</label>
+        <input type="number" class="form-input" id="f-arrosage" min="0" step="1" placeholder="Ex : 200">
+      </div>
+      <div class="form-group">
+        <label class="form-label">🌧️ Précip. (mm)</label>
+        <input type="number" class="form-input" id="f-precipitation" min="0" step="0.1" placeholder="Ex : 12.5">
+      </div>
+    </div>
+<button type="button" class="meteo-fetch-btn" onclick="fetchMeteo()" style="float:right;margin-top:-2px;">🌤️ Météo Auto</button>
+    <!-- TÂCHE + CULTURE -->
+    <div class="form-section-title">🛠️ Travail</div>
+    <div class="form-row single">
+      <div class="form-group">
+        <label class="form-label">Tâche</label>
+        <select class="form-input" id="f-tache">
+          <option value="">— Choisir une tâche —</option>
+          <option value="Amendement">Amendement</option>
+          <option value="Butage">Butage</option>
+          <option value="Désherbage">Désherbage</option>
+          <option value="Récolte">Récolte</option>
+          <option value="Plantation">Plantation</option>
+          <option value="Taille">Taille</option>
+          <option value="Mise en bouteille">Mise en bouteille</option>
+          <option value="Vendanges">Vendanges</option>
+          <option value="Palissage">Palissage</option>
+          <option value="Réparation">Réparation</option>
+          <option value="Mécanique">Mécanique</option>
+          <option value="Administratif">Administratif</option>
+          <option value="Travail du sol">Travail du sol</option>
+          <option value="Arrosage">Arrosage</option>
+          <option value="Engrais">Engrais</option>
+          <option value="Traitement">Traitement</option>
+          <option value="Nettoyage">Nettoyage</option>
+          <option value="Cheval">Cheval</option>
+          <option value="Broyage">Broyage</option>
+          <option value="Livraison">Livraison</option>
+          <option value="Clôturage">Clôturage</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Culture</label>
+        <select class="form-select" id="f-culture">
+          <option value="">— Choisir —</option>
+          <option>Jasmin</option>
+          <option>Rosiers</option>
+          <option>Vignes</option>
+          <option>Oliviers</option>
+          <option>Tubéreuses</option>
+        </select>
+      </div>
+      <div class="form-group" style="grid-column:1/-1;">
+        <label class="form-label">Zone / Parcelle</label>
+        <div class="zone-list" id="zone-list"></div>
+        <button type="button" class="zone-add-btn" id="zone-add-btn" onclick="addZoneField()">＋ Ajouter une zone</button>
+      </div>
+    </div>
+
+    <!-- HEURES + EFFECTIF + TOTAL -->
+    <div class="form-section-title">⏱️ Temps & Équipe</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Heures travaillées</label>
+        <div class="stepper">
+          <button class="step-btn" onclick="changeVal('f-heures', -0.5)">−</button>
+          <div class="step-val" id="f-heures">0</div>
+          <button class="step-btn" onclick="changeVal('f-heures', 0.5)">＋</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Effectif (personnes)</label>
+        <div class="stepper">
+          <button class="step-btn" onclick="changeVal('f-effectif', -1)">−</button>
+          <div class="step-val" id="f-effectif">1</div>
+          <button class="step-btn" onclick="changeVal('f-effectif', 1)">＋</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-row single" style="margin-top:4px;">
+      <div class="form-group">
+        <label class="form-label">Total heures (Heures × Effectif)</label>
+        <div class="total-display" id="f-total">
+          0
+          <span class="total-label">heures au total</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="form-section-title">📝 Notes</div>
+    <div class="form-row single">
+      <div class="form-group">
+        <textarea class="form-textarea" id="f-notes" placeholder="Observations, qualité, incidents…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-submit">
+    <button class="submit-btn" onclick="saveEntry()">✅ Enregistrer cette saisie</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE HISTORIQUE
+══════════════════════════════ -->
+<div class="page" id="page-history">
+  <div class="page-header">
+    <div class="back-btn" onclick="goTo('page-home')">←</div>
+    <div class="page-header-title">📋 Historique</div>
+  </div>
+
+  <div class="hist-body">
+    <!-- Sélecteur de mois -->
+    <div class="month-nav">
+      <div class="month-nav-btn" onclick="changeMonth(-1)">‹</div>
+      <div class="month-nav-label" id="hist-month-label"></div>
+      <div class="month-nav-btn" onclick="changeMonth(1)">›</div>
+    </div>
+
+    <!-- Total du mois -->
+    <div class="month-total-card">
+      <div>
+        <div class="month-total-label">Total du mois</div>
+        <div class="month-total-val" id="hist-total">0 h</div>
+        <div class="month-total-sub" id="hist-entries-count">0 saisie(s)</div>
+      </div>
+      <div style="font-size:2.5rem; opacity:0.3;">🌿</div>
+    </div>
+
+    <!-- Recherche -->
+    <div class="search-bar">
+      <input class="search-input" id="hist-search" placeholder="🔍 Rechercher tâche, lieu, culture..." oninput="renderHistory()">
+    </div>
+    <!-- Liste des jours -->
+    <div id="hist-days-list"></div>
+	
+  </div>
+  <div class="export-bar" style="display:flex;flex-direction:row;gap:8px;">
+    <button class="export-btn-main" onclick="exportExcel(true)">
+      📊 Excel complet (avec eau)
+    </button>
+    <button class="export-btn-main" onclick="exportExcel(false)" style="background:var(--surface);color:var(--green);border-color:var(--green);">
+      📊 Excel simplifié (sans eau)
+    </button>
+    <button class="export-btn-main" onclick="openMailModal()" style="background:var(--green);color:#fff;border-color:var(--green);">
+      📧 Envoyer par mail
+    </button>
+	
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE PARAMÈTRES
+══════════════════════════════ -->
+<div class="page" id="page-settings">
+  <div class="page-header">
+    <div class="back-btn" onclick="goTo('page-home')">←</div>
+    <div class="page-header-title">⚙️ Paramètres</div>
+  </div>
+  <div style="padding:20px 18px 40px; flex:1; overflow-y:auto;">
+
+    <div class="form-section-title">🎨 Apparence</div>
+    <div class="dark-toggle-row">
+      <span class="dark-toggle-label">🌙 Mode sombre</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="dark-toggle" onchange="toggleDark()">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="form-section-title">📧 Destinataires mail</div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
+      <div style="font-size:0.78rem;color:var(--text2);margin-bottom:12px;line-height:1.5;">
+        Ajoute les adresses mail qui recevront le rapport Excel. Elles apparaîtront dans la liste lors de l'envoi.
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <input type="email" id="new-email-input" class="form-input" placeholder="adresse@mail.com" style="flex:1;margin:0;">
+        <button onclick="addDestinataire()" style="padding:0 16px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:1.2rem;cursor:pointer;flex-shrink:0;">＋</button>
+      </div>
+      <div id="destinataires-list"></div>
+    </div>
+
+    <div class="form-section-title">💾 Sauvegarde des données</div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:6px;">Export JSON</div>
+      <div style="font-size:0.78rem;color:var(--text2);margin-bottom:14px;line-height:1.5;">Télécharge toutes tes données au format JSON. Garde ce fichier précieusement pour ne rien perdre.</div>
+      <button onclick="exportJSON()" style="width:100%;padding:13px;background:var(--green);color:#fff;border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;">
+        ⬇️ Exporter les données (JSON)
+      </button>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:6px;">Import JSON</div>
+      <div style="font-size:0.78rem;color:var(--text2);margin-bottom:14px;line-height:1.5;">Restaure tes données depuis un fichier JSON exporté précédemment. ⚠️ Les données actuelles seront remplacées.</div>
+      <label style="display:block;width:100%;padding:13px;background:var(--surface2);border:2px dashed var(--border);border-radius:12px;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;text-align:center;color:var(--green);">
+        ⬆️ Importer un fichier JSON
+        <input type="file" accept=".json" onchange="importJSON(event)" style="display:none;">
+      </label>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:4px;">Données actuelles</div>
+      <div id="settings-stats" style="font-size:0.78rem;color:var(--text2);line-height:1.8;"></div>
+    </div>
+<div class="form-section-title">🌤️ Météo automatique</div>
+    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
+      <div style="font-size:0.78rem;color:var(--text2);margin-bottom:10px;line-height:1.5;">Saisis le nom de ta ville pour récupérer la météo automatiquement dans le formulaire.</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <input type="text" class="form-input" id="set-city" placeholder="Ex : Montauroux, Grasse..." style="flex:1;margin:0;">
+        <button onclick="searchCity()" style="padding:0 16px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:1.1rem;cursor:pointer;flex-shrink:0;">🔍</button>
+      </div>
+      <div id="city-result" style="font-size:0.8rem;color:var(--text2);min-height:18px;margin-bottom:8px;"></div>
+      <button onclick="confirmCity()" id="city-confirm-btn" style="display:none;width:100%;padding:11px;background:var(--green);color:#fff;border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;">✅ Confirmer cette ville</button>
+    </div>
+
+    <div class="form-section-title">🔑 Tokens Météo-France</div>
+    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
+      <div style="font-size:0.78rem;color:var(--text2);margin-bottom:12px;line-height:1.5;">
+        Token obtenu sur <strong>portail-api.meteofrance.fr</strong> → <strong>Package Observations</strong>. Utilisé pour la consolidation automatique des précipitations (données réelles J-2+).
+      </div>
+      <div style="margin-bottom:10px;">
+        <label class="form-label">📦 Package Observations</label>
+        <div style="display:flex;gap:8px;margin-top:4px;">
+          <input type="password" class="form-input" id="set-token-obs" placeholder="Token Package Observations" style="flex:1;margin:0;font-size:0.78rem;">
+          <button onclick="saveToken('obs')" style="padding:0 14px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:0.85rem;font-weight:700;cursor:pointer;flex-shrink:0;">💾</button>
+        </div>
+        <div id="token-obs-status" style="font-size:0.72rem;color:var(--text2);margin-top:4px;"></div>
+      </div>
+
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:4px;">Informations relatives à Open-Meteo</div>
+      <div style="font-size:0.78rem;color:var(--text2);line-height:1.8;">Open-Meteo agrège plusieurs modèles météorologiques numériques (principalement ECMWF et GFS) qui sont alimentés en continu par des milliers de sources : stations au sol, satellites, ballons-sondes, bouées océaniques. Ces modèles découpent l'atmosphère terrestre en une grille tridimensionnelle et simulent son évolution heure par heure en résolvant des équations physiques complexes (pression, température, humidité, vent à différentes altitudes). Quand on appelle l'API avec des coordonnées GPS et une date, Open-Meteo retourne les valeurs interpolées du point de grille le plus proche — résolution d'environ 1 à 11 km selon le modèle. On récupère deux informations : le code météo WMO (un chiffre standardisé internationalement qui décrit le type de temps : 0 = ciel dégagé, 61 = pluie modérée, 95 = orage, etc.) qu'on traduit ensuite en emoji lisible, et les précipitations cumulées en mm prévues sur la journée entière.</div>
+    </div>
+
+    <!-- ENCART VERSION -->
+    <div style="background:var(--green-bg);border:1.5px solid var(--green);border-radius:14px;padding:16px 18px;margin-bottom:12px;text-align:center;">
+      <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--green);font-weight:700;margin-bottom:6px;">Version de l'application</div>
+      <div style="font-size:1.4rem;font-weight:800;color:var(--green);">v1.0</div>
+      <div style="font-size:0.78rem;color:var(--text2);margin-top:4px;">Mise à jour le <strong>17 mars 2026</strong></div>
+      <div style="font-size:0.7rem;color:var(--text2);margin-top:8px;line-height:1.5;">
+        Multi-zone · Météo-France · ERA5 stats · Tâches & stats · PWA optimisée
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE ÉVÉNEMENTS À VENIR
+══════════════════════════════ -->
+<div class="page" id="page-events">
+  <div class="page-header">
+    <div class="back-btn" onclick="goTo('page-home')">←</div>
+    <div class="page-header-title">📅 Événements à venir</div>
+  </div>
+  <div style="padding:16px 18px 100px;overflow-y:auto;flex:1;">
+
+    <!-- Formulaire ajout -->
+    <div class="event-form-card">
+      <div class="form-section-title" style="margin-bottom:12px;">➕ Nouvel événement</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div>
+          <label class="form-label">Date</label>
+          <input type="date" class="form-input" id="ev-date" style="margin-top:4px;">
+        </div>
+        <div style="grid-column:1/-1;">
+          <label class="form-label">Libellé</label>
+          <input type="text" class="form-input" id="ev-label" placeholder="Ex : Début cueillette des roses" style="margin-top:4px;">
+        </div>
+      </div>
+      <button onclick="addEvent()" style="width:100%;padding:12px;background:var(--green);color:#fff;border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;">
+        ✅ Ajouter l'événement
+      </button>
+    </div>
+
+    <!-- Liste des événements -->
+    <div class="event-list" id="events-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE STATISTIQUES
+══════════════════════════════ -->
+<div class="page" id="page-stats">
+  <div class="page-header">
+    <div class="back-btn" onclick="goTo('page-home')">←</div>
+    <div class="page-header-title">📊 Statistiques</div>
+  </div>
+  <div class="stat-page-body" id="stat-body">
+    <!-- Filtre période -->
+    <div class="stat-filter">
+      <button class="stat-filter-btn active" id="sf-week"  onclick="setStatFilter('week')">Semaine</button>
+      <button class="stat-filter-btn"        id="sf-month" onclick="setStatFilter('month')">Mois</button>
+      <button class="stat-filter-btn"        id="sf-year"  onclick="setStatFilter('year')">Année</button>
+    </div>
+    <!-- Sélecteur semaine -->
+    <div id="picker-week" class="stat-picker">
+      <button class="stat-picker-nav" onclick="shiftPeriod(-1)">‹</button>
+      <div class="stat-picker-label" id="picker-week-label"></div>
+      <button class="stat-picker-nav" onclick="shiftPeriod(1)">›</button>
+    </div>
+    <!-- Sélecteur mois -->
+    <div id="picker-month" class="stat-picker" style="display:none">
+      <button class="stat-picker-nav" onclick="shiftPeriod(-1)">‹</button>
+      <div class="stat-picker-label" id="picker-month-label"></div>
+      <button class="stat-picker-nav" onclick="shiftPeriod(1)">›</button>
+    </div>
+    <!-- Sélecteur année -->
+    <div id="picker-year" class="stat-picker" style="display:none">
+      <button class="stat-picker-nav" onclick="shiftPeriod(-1)">‹</button>
+      <div class="stat-picker-label" id="picker-year-label"></div>
+      <button class="stat-picker-nav" onclick="shiftPeriod(1)">›</button>
+    </div>
+    <div id="stat-content"></div>
+  </div>
+</div>
+
+<!-- MODALE DISCLAIMER (première visite) -->
+<div id="disclaimer-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--surface);border-radius:24px;padding:28px 22px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;">
+
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:2.2rem;margin-bottom:8px;">🌿</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--green);">JDay LCN</div>
+      <div style="font-size:0.75rem;color:var(--text2);margin-top:2px;">par GIRAUD Lionel</div>
+    </div>
+
+    <!-- Prototype -->
+    <div style="background:var(--green-bg);border:1.5px solid var(--green);border-radius:14px;padding:14px 16px;margin-bottom:14px;">
+      <div style="font-size:0.82rem;font-weight:700;color:var(--green);margin-bottom:6px;">🚧 Version prototype</div>
+      <div style="font-size:0.8rem;color:var(--text);line-height:1.6;">
+        Cette application est en cours de développement. Le design, les fonctionnalités et l'interface sont amenés à évoluer. Certaines features peuvent être incomplètes ou changer entre deux versions.
+      </div>
+    </div>
+
+    <!-- Installation -->
+    <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:20px;">
+      <div style="font-size:0.82rem;font-weight:700;color:var(--text);margin-bottom:10px;">📲 Installer l'app sur ton téléphone</div>
+
+      <div style="font-size:0.78rem;color:var(--text2);font-weight:600;margin-bottom:4px;">Android — Chrome / Brave</div>
+      <div style="font-size:0.78rem;color:var(--text);line-height:1.6;margin-bottom:10px;">
+        Appuie sur le menu <strong>⋮</strong> en haut à droite → <strong>"Ajouter à l'écran d'accueil"</strong> ou <strong>"Installer l'application"</strong>
+      </div>
+
+      <div style="font-size:0.78rem;color:var(--text2);font-weight:600;margin-bottom:4px;">iOS — Safari</div>
+      <div style="font-size:0.78rem;color:var(--text);line-height:1.6;margin-bottom:10px;">
+        Appuie sur l'icône <strong>Partager</strong> (carré avec flèche) → <strong>"Sur l'écran d'accueil"</strong>
+      </div>
+
+      <div style="font-size:0.72rem;color:var(--text2);background:var(--bg);border-radius:8px;padding:8px 10px;line-height:1.5;">
+        ⚠️ Les données sont stockées <strong>uniquement sur ton appareil</strong>. Pense à exporter régulièrement en JSON depuis les Paramètres pour ne rien perdre.
+      </div>
+    </div>
+
+    <!-- Bouton -->
+    <button onclick="closeDisclaimer()" style="width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:14px;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;">
+      ✅ J'ai compris, on y va !
+    </button>
+  </div>
+</div>
+
+<!-- MODALE ENVOI MAIL -->
+<div id="mail-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:flex-end;justify-content:center;">
+  <div style="background:var(--surface);border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;max-width:430px;max-height:80vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--green);">📧 Envoyer par mail</div>
+      <div onclick="closeMailModal()" style="width:32px;height:32px;background:var(--surface2);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;">✕</div>
+    </div>
+    <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--text2);margin-bottom:8px;">Destinataires</div>
+    <div id="mail-modal-recipients" style="margin-bottom:16px;display:flex;flex-direction:column;gap:6px;"></div>
+    <div style="font-size:0.72rem;color:var(--text2);background:var(--surface2);border-radius:10px;padding:10px 12px;margin-bottom:16px;line-height:1.6;">
+      📎 Ton appli mail va s'ouvrir avec les destinataires pré-remplis.<br>
+      Pense à joindre le fichier Excel téléchargé !
+    </div>
+    <button onclick="sendMail()" style="width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:14px;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;">
+      ✉️ Ouvrir l'appli mail
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+let entries       = JSON.parse(localStorage.getItem('agro_entries') || '[]');
+let destinataires = JSON.parse(localStorage.getItem('agro_destinataires') || '[]');
+let events        = JSON.parse(localStorage.getItem('agro_events') || '[]');
+let gpsLat        = parseFloat(localStorage.getItem('agro_lat') || '0');
+let gpsLon        = parseFloat(localStorage.getItem('agro_lon') || '0');
+let darkMode      = localStorage.getItem('agro_dark') === 'true';
+let mfTokenObs    = localStorage.getItem('agro_mf_token_obs') || '';
+let mfTokenClim   = localStorage.getItem('agro_mf_token_clim') || '';
+let zoneCount     = 1;
+let histYear  = new Date().getFullYear();
+let histMonth = new Date().getMonth();
+let fHeures   = 0;
+let fEffectif = 1;
+
+const MONTHS_FR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const DAYS_FR   = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+
+// ══════════════════════════════════════
+// ACCUEIL
+// ══════════════════════════════════════
+function initHome() {
+  const now = new Date();
+  const dow = now.getDay(); // 0=dim
+  document.getElementById('home-date-full').textContent =
+    DAYS_FR[dow] + ' ' + now.getDate() + ' ' + MONTHS_FR[now.getMonth()] + ' ' + now.getFullYear();
+
+  const phrases = {
+    0: "Qu'est-ce que tu fous là ? C'est le week-end, vas dormir !! 😴",
+    1: "Bonjour mon p'tit biscuit 🍪 Belle semaine devant toi !",
+    2: "Hello Raider 🤠 On est mardi, on gère !",
+    3: "Yo néné ! Mercredi, c'est ravioli !! Déjà à mi-chemin 💪",
+    4: "Ma ptite gazouze !  c'est Jeudi, on tient bon 🌿",
+    5: "Bon vendredi ! Le week-end approche, bientot a Speranza !! ^^ 🎉",
+    6: "Qu'est-ce que tu fous là ? C'est le week-end, vas dormir !! 😴"
+  };
+  document.getElementById('home-phrase').textContent = phrases[dow];
+  // Appliquer dark mode
+  if (darkMode) document.body.classList.add('dark');
+  // Disclaimer première visite
+  checkDisclaimer();
+}
+
+// ══════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════
+function goTo(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  window.scrollTo(0, 0);
+  // NE PAS appeler initForm ici — géré manuellement selon le contexte
+  if (pageId === 'page-history') renderHistory();
+  if (pageId === 'page-settings') renderSettingsStats();
+  if (pageId === 'page-events')  renderEvents();
+  if (pageId === 'page-stats')   renderStats();
+}
+
+function newEntry() {
+  // Nouvelle saisie depuis l'accueil — reset complet
+  initForm();
+  goTo('page-form');
+}
+
+// ══════════════════════════════════════
+// FORMULAIRE
+// ══════════════════════════════════════
+function initForm() {
+  const now = new Date();
+  const today = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  document.getElementById('f-date').value = today;
+  fHeures = 0; fEffectif = 1;
+  document.getElementById('f-heures').textContent = '0';
+  document.getElementById('f-effectif').textContent = '1';
+  updateTotal();
+  document.getElementById('f-lieu').value    = '';
+  document.getElementById('f-meteo').value   = '';
+  document.getElementById('f-culture').value = '';
+  document.getElementById('f-tache').value   = '';
+  initZoneFields(['']);
+  document.getElementById('f-notes').value        = '';
+  document.getElementById('f-precipitation').value = '';
+  document.getElementById('f-arrosage').value = '';
+  editingId = null;
+  document.getElementById('form-page-title').textContent = '📝 Saisie du jour';
+}
+
+function changeVal(id, delta) {
+  if (id === 'f-heures') {
+    fHeures = Math.max(0, Math.min(24, fHeures + delta));
+    document.getElementById('f-heures').textContent = fHeures % 1 === 0 ? fHeures : fHeures.toFixed(1);
+  } else {
+    fEffectif = Math.max(1, Math.min(99, fEffectif + delta));
+    document.getElementById('f-effectif').textContent = fEffectif;
+  }
+  updateTotal();
+}
+
+function updateTotal() {
+  const total = fHeures * fEffectif;
+  document.getElementById('f-total').innerHTML =
+    `<strong>${total % 1 === 0 ? total : total.toFixed(1)}</strong><span class="total-label">heures au total</span>`;
+}
+
+function saveEntry() {
+  const date    = document.getElementById('f-date').value;
+  const lieu    = document.getElementById('f-lieu').value;
+  const meteo   = document.getElementById('f-meteo').value;
+  const tache   = document.getElementById('f-tache').value.trim();
+  const culture = document.getElementById('f-culture').value;
+  const zoneInputs = document.querySelectorAll('#zone-list .zone-input');
+  const zoneArr    = [...zoneInputs].map(i => i.value.trim()).filter(Boolean);
+  const zone       = zoneArr;
+  const notes         = document.getElementById('f-notes').value.trim();
+  const precipEl      = document.getElementById('f-precipitation');
+  const arrosageEl    = document.getElementById('f-arrosage');
+  const precipitation = precipEl.value !== '' ? parseFloat(precipEl.value) : null;
+  const arrosage      = arrosageEl.value !== '' ? parseFloat(arrosageEl.value) : null;
+
+  if (!date || !lieu || !meteo || !tache) {
+    showToast('⚠️ Remplis Date, Lieu, Météo et Tâche');
+    return;
+  }
+
+  const entry = {
+    id: editingId !== null ? editingId : Date.now(),
+    date, lieu, meteo, tache, culture,
+    zone: zoneArr,
+    heures: fHeures, effectif: fEffectif,
+    totalHeures: parseFloat((fHeures * fEffectif).toFixed(1)),
+    precipitation,
+    precipSource: precipitation != null ? 'forecast' : null,
+    arrosage, notes
+  };
+
+  if (editingId !== null) {
+    // Remplace l'entrée existante
+    const idx = entries.findIndex(e => e.id == editingId);
+    if (idx !== -1) entries[idx] = entry;
+    else entries.push(entry);
+    editingId = null;
+    showToast('✏️ Saisie modifiée !');
+  } else {
+    entries.push(entry);
+    showToast('✅ Saisie enregistrée !');
+  }
+  save();
+  setTimeout(() => goTo('page-home'), 1200);
+}
+
+// ══════════════════════════════════════
+// HISTORIQUE
+// ══════════════════════════════════════
+function changeMonth(delta) {
+  histMonth += delta;
+  if (histMonth > 11) { histMonth = 0; histYear++; }
+  if (histMonth < 0)  { histMonth = 11; histYear--; }
+  renderHistory();
+}
+
+function renderHistory() {
+  document.getElementById('hist-month-label').textContent = MONTHS_FR[histMonth] + ' ' + histYear;
+
+  // Filtre recherche
+  const searchQ = (document.getElementById('hist-search')?.value || '').toLowerCase().trim();
+
+  // Filter entries for this month
+  const monthEntries = entries.filter(e => {
+    const d = new Date(e.date);
+    if (d.getFullYear() !== histYear || d.getMonth() !== histMonth) return false;
+    if (!searchQ) return true;
+    return (e.tache||'').toLowerCase().includes(searchQ)
+        || (e.lieu||'').toLowerCase().includes(searchQ)
+        || (e.culture||'').toLowerCase().includes(searchQ);
+  });
+
+  const totalH = monthEntries.reduce((s, e) => s + e.totalHeures, 0);
+  document.getElementById('hist-total').textContent = (totalH % 1 === 0 ? totalH : totalH.toFixed(1)) + ' h';
+  document.getElementById('hist-entries-count').textContent = monthEntries.length + ' saisie(s)';
+
+  // Build days of month
+  const daysInMonth = new Date(histYear, histMonth + 1, 0).getDate();
+  const list = document.getElementById('hist-days-list');
+  list.innerHTML = '';
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = histYear + '-' + String(histMonth + 1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    const dayEntries = entries.filter(e => {
+      if (e.date !== dateStr) return false;
+      if (!searchQ) return true;
+      return (e.tache||'').toLowerCase().includes(searchQ)
+          || (e.lieu||'').toLowerCase().includes(searchQ)
+          || (e.culture||'').toLowerCase().includes(searchQ);
+    });
+    const dow = new Date(dateStr).getDay();
+    const isWeekend = dow === 0 || dow === 6;
+
+    if (dayEntries.length === 0) {
+      // Show empty day only if not weekend (or show briefly)
+      const el = document.createElement('div');
+      el.className = 'day-entry';
+      el.style.opacity = isWeekend ? '0.4' : '0.6';
+      el.innerHTML = `
+        <div class="day-entry-header">
+          <div class="day-num empty">${d}</div>
+          <div class="day-info">
+            <div class="day-info-title" style="color:var(--text2)">${DAYS_FR[dow]}</div>
+            <div class="day-info-sub">${isWeekend ? 'Week-end' : 'Aucune saisie'}</div>
+          </div>
+          <div class="day-total-h zero">—</div>
+        </div>`;
+      list.appendChild(el);
+    } else if (dayEntries.length === 1) {
+      // ── 1 saisie : affichage classique
+      const entry = dayEntries[0];
+      const el = document.createElement('div');
+      el.className = 'day-entry';
+      el.innerHTML = `
+        <div class="day-entry-header" onclick="toggleDetail('detail-${entry.id}')">
+          <div class="day-num">${d}</div>
+          <div class="day-info">
+            <div class="day-info-title">${DAYS_FR[dow]} — <span class="tacheTitre">${entry.tache}</span></div>
+            <div class="day-info-sub">${entry.lieu} · ${entry.culture}${zoneDisplay(entry.zone) ? ' · ' + zoneDisplay(entry.zone) : ''}</div>
+          </div>
+          <div class="day-total-h">${entry.totalHeures}h</div>
+        </div>
+        <div class="day-entry-detail" id="detail-${entry.id}">
+          ${buildDetailGrid(entry)}
+          <div class="detail-actions">
+            <div class="detail-btn" onclick="editEntry('${entry.id}')">✏️ Modifier</div>
+            <div class="detail-btn danger" onclick="deleteEntry('${entry.id}')">🗑️ Supprimer</div>
+          </div>
+        </div>`;
+      list.appendChild(el);
+
+    } else {
+      // ── Plusieurs saisies : groupées sous une ligne jour
+      const dayTotal = dayEntries.reduce((s, e) => s + e.totalHeures, 0);
+      const lieux = [...new Set(dayEntries.map(e => e.lieu))].join(', ');
+      const el = document.createElement('div');
+      el.className = 'day-group';
+      el.innerHTML = `
+        <div class="day-group-header" onclick="toggleGroup('group-${dateStr}')">
+          <div class="day-num">${d}</div>
+          <div class="day-info">
+            <div class="day-info-title">${DAYS_FR[dow]} <span class="badge-count">${dayEntries.length} saisies</span></div>
+            <div class="day-info-sub">${lieux}</div>
+          </div>
+          <div class="day-group-total">${dayTotal % 1 === 0 ? dayTotal : dayTotal.toFixed(1)}h</div>
+        </div>
+        <div class="day-group-entries" id="group-${dateStr}">
+          ${dayEntries.map((entry, idx) => `
+            <div class="day-group-entry">
+              <div class="day-group-entry-header" onclick="toggleDetail('detail-${entry.id}')">
+                <span class="entry-num">#${idx + 1}</span>
+                <div class="day-info" style="flex:1">
+                  <div class="tacheTitre">${entry.tache}</div>
+                  <div class="day-info-sub">${entry.lieu} · ${entry.culture}${zoneDisplay(entry.zone) ? ' · ' + zoneDisplay(entry.zone) : ''}</div>
+                </div>
+                <div class="day-total-h">${entry.totalHeures}h</div>
+              </div>
+              <div class="day-entry-detail" id="detail-${entry.id}">
+                ${buildDetailGrid(entry)}
+                <div class="detail-actions">
+                  <div class="detail-btn" onclick="editEntry('${entry.id}')">✏️ Modifier</div>
+                  <div class="detail-btn danger" onclick="deleteEntry('${entry.id}')">🗑️ Supprimer</div>
+                </div>
+              </div>
+            </div>`).join('')}
+        </div>`;
+      list.appendChild(el);
+    }
+  }
+}
+
+function buildDetailGrid(entry) {
+  return `<div class="detail-grid">
+    <div class="detail-item"><div class="detail-item-label">Lieu</div><div class="detail-item-val">${entry.lieu}</div></div>
+    <div class="detail-item"><div class="detail-item-label">Météo</div><div class="detail-item-val">${entry.meteo}</div></div>
+    <div class="detail-item"><div class="detail-item-label">Culture</div><div class="detail-item-val">${entry.culture}</div></div>
+    <div class="detail-item"><div class="detail-item-label">Zone / Parcelle</div><div class="detail-item-val">${zoneDisplay(entry.zone) || '—'}</div></div>
+    <div class="detail-item"><div class="detail-item-label">Heures</div><div class="detail-item-val">${entry.heures}h</div></div>
+    <div class="detail-item"><div class="detail-item-label">Effectif</div><div class="detail-item-val">${entry.effectif} pers.</div></div>
+    <div class="detail-item"><div class="detail-item-label">Total heures</div><div class="detail-item-val" style="color:var(--green)">${entry.totalHeures}h</div></div>
+    <div class="detail-item"><div class="detail-item-label">Tâche</div><div class="detail-item-val">${entry.tache}</div></div>
+    ${entry.precipitation != null ? `<div class="detail-item"><div class="detail-item-label">Précipitations</div><div class="detail-item-val" style="color:#3b82f6">${entry.precipitation} mm <span class="precip-badge ${entry.precipSource === 'confirmed' ? 'confirmed' : 'forecast'}">${entry.precipSource === 'confirmed' ? '🔵 Confirmé' : '🟡 Prévision'}</span></div></div>` : ''}
+    ${entry.arrosage != null ? `<div class="detail-item"><div class="detail-item-label">Arrosage</div><div class="detail-item-val" style="color:#3b82f6">${entry.arrosage} L</div></div>` : ''}
+    ${entry.notes ? `<div class="detail-notes">"${entry.notes}"</div>` : ''}
+  </div>`;
+}
+
+function toggleGroup(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('open');
+}
+
+function toggleDetail(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('open');
+}
+
+function deleteEntry(id) {
+  if (!confirm('Voulez-vous supprimer cette saisie ?')) return;
+  entries = entries.filter(e => e.id != id);
+  save();
+  renderHistory();
+  showToast('🗑️ Saisie supprimée');
+}
+
+let editingId = null; // id de la saisie en cours de modification
+
+function editEntry(id) {
+  const entry = entries.find(e => e.id == id);
+  if (!entry) return;
+  // 1. Préparer le formulaire AVANT de naviguer
+  initForm();
+  editingId = id; // doit être APRÈS initForm qui remet à null
+  // 2. Remplir les champs
+  document.getElementById('form-page-title').textContent = '✏️ Modifier la saisie';
+  document.getElementById('f-date').value    = entry.date;
+  document.getElementById('f-lieu').value    = entry.lieu;
+  document.getElementById('f-meteo').value   = entry.meteo;
+  document.getElementById('f-tache').value   = entry.tache;
+  document.getElementById('f-culture').value = entry.culture;
+  const zones = Array.isArray(entry.zone) ? entry.zone : (entry.zone ? [entry.zone] : ['']);
+  initZoneFields(zones);
+  document.getElementById('f-notes').value   = entry.notes || '';
+  document.getElementById('f-precipitation').value = (entry.precipitation != null) ? entry.precipitation : '';
+  document.getElementById('f-arrosage').value = (entry.arrosage != null) ? entry.arrosage : '';
+  fHeures   = entry.heures;
+  fEffectif = entry.effectif;
+  document.getElementById('f-heures').textContent   = fHeures % 1 === 0 ? fHeures : fHeures.toFixed(1);
+  document.getElementById('f-effectif').textContent = fEffectif;
+  updateTotal();
+  // 3. Naviguer sans déclencher initForm
+  goTo('page-form');
+}
+
+function safeBack() {
+  // Si on était en mode édition, on annule sans supprimer
+  editingId = null;
+  goTo('page-home');
+}
+
+// ══════════════════════════════════════
+// EXPORT EXCEL
+// ══════════════════════════════════════
+function stripEmoji(str) {
+  return (str || '')
+    .replace(/[\u{1F000}-\u{1FFFF}]/gu, '')   // emojis supplementaires
+    .replace(/[\u{2600}-\u{27BF}]/gu, '')       // symboles divers (☀️⛅⛈️💨)
+    .replace(/[\u{FE00}-\u{FEFF}]/gu, '')       // variation selectors
+    .replace(/[\u{1F900}-\u{1F9FF}]/gu, '')     // emojis supplementaires 2
+    .replace(/\uFE0F/g, '')                      // variation selector-16
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function exportExcel(withWater = true) {
+  const monthName = MONTHS_FR[histMonth];
+  const wb = XLSX.utils.book_new();
+  const rows = [];
+
+  const headers = withWater
+    ? ['Date','Lieu','Météo','Précip. (mm)','Arrosage (L)','Tâche','Culture','Zone','Heures','Effectif','Total heures','Notes']
+    : ['Date','Lieu','Météo','Tâche','Culture','Zone','Heures','Effectif','Total heures','Notes'];
+
+  rows.push(['MOIS', monthName + ' ' + histYear]);
+  rows.push([]);
+  rows.push(headers);
+
+  const daysInMonth = new Date(histYear, histMonth + 1, 0).getDate();
+  let grandTotal = 0;
+  let hasSaisie = false;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = histYear + '-' + String(histMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    const dow = new Date(dateStr).getDay();
+    const isWeekend = dow === 0 || dow === 6;
+    const dateLabel = new Date(dateStr).toLocaleDateString('fr-FR');
+    const dayEntries = entries.filter(e => e.date === dateStr);
+
+    if (dayEntries.length > 0) {
+      hasSaisie = true;
+      dayEntries.forEach(e => {
+        grandTotal += e.totalHeures;
+        if (withWater) {
+          rows.push([dateLabel, e.lieu, stripEmoji(e.meteo), e.precipitation != null ? e.precipitation : '', e.arrosage != null ? e.arrosage : '', e.tache, e.culture, zoneDisplay(e.zone), e.heures, e.effectif, e.totalHeures, e.notes || '']);
+        } else {
+          rows.push([dateLabel, e.lieu, stripEmoji(e.meteo), e.tache, e.culture, zoneDisplay(e.zone), e.heures, e.effectif, e.totalHeures, e.notes || '']);
+        }
+      });
+    } else {
+      const note = isWeekend ? 'Week-end' : 'Jour chômé';
+      rows.push([dateLabel, '', '', '', '', '', '', '', withWater ? '' : '', withWater ? '' : '', withWater ? '' : note, withWater ? note : '']);
+    }
+  }
+
+  if (!hasSaisie) { showToast('⚠️ Aucune saisie ce mois-ci'); return; }
+
+  rows.push([]);
+  const totalCol = withWater ? 12 : 10;
+  // Colonne Total heures = index totalCol-1 (0-based) = lettre Excel
+  // rows[0]=MOIS, rows[1]=vide, rows[2]=headers → Excel ligne 3
+  // données : rows[3] à rows[3 + daysInMonth*n - 1]
+  // Ligne de début des données en Excel = 4, fin = rows.length (avant la ligne vide et total)
+  const dataStartRow = 4; // Excel 1-based
+  const dataEndRow   = rows.length; // après le rows.push([]) vide, avant total
+  const colLetter    = withWater ? 'K' : 'I'; // Total heures column letter
+  const totalRow = new Array(totalCol).fill('');
+  totalRow[totalCol - 2] = 'TOTAL';
+  totalRow[totalCol - 1] = { f: 'SUM(' + colLetter + dataStartRow + ':' + colLetter + dataEndRow + ')' };
+  rows.push(totalRow);
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  const colWidths = withWater
+    ? [12,18,14,10,10,20,14,12,8,10,14,30]
+    : [12,18,14,20,14,12,8,10,14,30];
+  ws['!cols'] = colWidths.map(w => ({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws, monthName);
+  const suffix = withWater ? 'complet' : 'simplifie';
+  XLSX.writeFile(wb, 'JDayLCN_' + monthName + '_' + histYear + '_' + suffix + '.xlsx');
+  showToast('📊 Export Excel téléchargé !');
+}
+
+// ══════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════
+function save() {
+  localStorage.setItem('agro_entries', JSON.stringify(entries));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════════════
+// PARAMÈTRES — JSON backup
+// ══════════════════════════════════════
+function exportJSON() {
+  const data = JSON.stringify({
+    entries,
+    events,
+    destinataires,
+    city_name:     localStorage.getItem('agro_city_name') || '',
+    gps_lat:       gpsLat || '',
+    gps_lon:       gpsLon || '',
+    mf_token_obs:  mfTokenObs || '',
+    mf_token_clim: mfTokenClim || ''
+  }, null, 2);
+  const blob = new Blob([data], {type: 'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = 'JDayLCN_backup_' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('💾 Export JSON téléchargé !');
+}
+
+function importJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      // Support ancien format (tableau direct) et nouveau format objet
+      let newEntries, newEvents, newDest, newCity, newLat, newLon;
+      if (Array.isArray(imported)) {
+        newEntries = imported;
+        newEvents  = []; newDest = []; newCity = ''; newLat = 0; newLon = 0;
+      } else if (imported.entries && Array.isArray(imported.entries)) {
+        newEntries = imported.entries;
+        newEvents  = Array.isArray(imported.events)       ? imported.events       : [];
+        newDest    = Array.isArray(imported.destinataires) ? imported.destinataires : [];
+        newCity    = imported.city_name || '';
+        newLat     = parseFloat(imported.gps_lat) || 0;
+        newLon     = parseFloat(imported.gps_lon) || 0;
+      } else {
+        throw new Error('Format invalide');
+      }
+      const msg = newEntries.length + ' saisie(s), ' + newEvents.length + ' événement(s), ' + newDest.length + ' destinataire(s)';
+      if (!confirm('Importer ' + msg + ' ?\nLes données actuelles seront remplacées.')) return;
+      entries       = newEntries;
+      events        = newEvents;
+      destinataires = newDest;
+      gpsLat        = newLat;
+      gpsLon        = newLon;
+      save();
+      saveEvents();
+      saveDestinataires();
+      if (newCity) localStorage.setItem('agro_city_name', newCity);
+      if (newLat)  localStorage.setItem('agro_lat', newLat);
+      if (newLon)  localStorage.setItem('agro_lon', newLon);
+      if (imported.mf_token_obs)  { mfTokenObs  = imported.mf_token_obs;  localStorage.setItem('agro_mf_token_obs',  mfTokenObs); }
+      if (imported.mf_token_clim) { mfTokenClim = imported.mf_token_clim; localStorage.setItem('agro_mf_token_clim', mfTokenClim); }
+      renderSettingsStats();
+      showToast('✅ Données importées !');
+    } catch(err) {
+      showToast('❌ Fichier JSON invalide');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function renderSettingsStats() {
+  renderDestinataires();
+  // Dark toggle
+  const dt = document.getElementById('dark-toggle');
+  if (dt) dt.checked = darkMode;
+  // City label
+  renderSettingsCityLabel();
+  renderTokenStatus();
+  const cityInput = document.getElementById('set-city');
+  if (cityInput) {
+    const saved = localStorage.getItem('agro_city_name') || '';
+    if (saved) cityInput.value = saved;
+  }
+  const el = document.getElementById('settings-stats');
+  if (!el) return;
+  if (entries.length === 0) { el.textContent = 'Aucune saisie enregistrée.'; return; }
+  const totalH = entries.reduce((s,e) => s + e.totalHeures, 0);
+  const dates  = entries.map(e => e.date).sort();
+  el.innerHTML = entries.length + ' saisie(s) enregistrée(s)<br>'
+    + 'Total cumulé : ' + totalH + 'h<br>'
+    + 'Du ' + new Date(dates[0]).toLocaleDateString('fr-FR')
+    + ' au ' + new Date(dates[dates.length-1]).toLocaleDateString('fr-FR');
+}
+
+// ══════════════════════════════════════
+// DESTINATAIRES
+// ══════════════════════════════════════
+function saveDestinataires() {
+  localStorage.setItem('agro_destinataires', JSON.stringify(destinataires));
+}
+
+function addDestinataire() {
+  const input = document.getElementById('new-email-input');
+  const email = input.value.trim().toLowerCase();
+  if (!email || !email.includes('@')) { showToast('⚠️ Adresse mail invalide'); return; }
+  if (destinataires.includes(email)) { showToast('⚠️ Déjà dans la liste'); return; }
+  destinataires.push(email);
+  saveDestinataires();
+  input.value = '';
+  renderDestinataires();
+  showToast('✅ Destinataire ajouté !');
+}
+
+function removeDestinataire(email) {
+  if (!confirm('Voulez-vous supprimer ce destinataire ?\n' + email)) return;
+  destinataires = destinataires.filter(e => e !== email);
+  saveDestinataires();
+  renderDestinataires();
+}
+
+function renderDestinataires() {
+  const el = document.getElementById('destinataires-list');
+  if (!el) return;
+  if (destinataires.length === 0) {
+    el.innerHTML = '<div style="font-size:0.78rem;color:var(--text2);text-align:center;padding:12px;">Aucun destinataire pour l\'instant</div>';
+    return;
+  }
+  el.innerHTML = destinataires.map(email => `
+    <div style="display:flex;align-items:center;gap:10px;background:var(--surface2);border-radius:10px;padding:10px 12px;margin-bottom:6px;">
+      <span style="font-size:1rem;">📧</span>
+      <span style="flex:1;font-size:0.85rem;font-weight:500;">${email}</span>
+      <span onclick="removeDestinataire('${email}')" style="color:var(--rose);cursor:pointer;font-size:1.1rem;padding:2px 6px;">✕</span>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════
+// MODALE MAIL
+// ══════════════════════════════════════
+function openMailModal() {
+  if (destinataires.length === 0) {
+    showToast('⚠️ Ajoute des destinataires dans Paramètres');
+    return;
+  }
+  const el = document.getElementById('mail-modal-recipients');
+  el.innerHTML = destinataires.map(email => `
+    <label style="display:flex;align-items:center;gap:12px;background:var(--surface2);border-radius:10px;padding:12px 14px;cursor:pointer;">
+      <input type="checkbox" value="${email}" checked style="width:18px;height:18px;accent-color:var(--green);">
+      <span style="font-size:0.88rem;font-weight:500;">${email}</span>
+    </label>`).join('');
+  document.getElementById('mail-modal').style.display = 'flex';
+}
+
+function closeMailModal() {
+  document.getElementById('mail-modal').style.display = 'none';
+}
+
+function sendMail() {
+  const checked = [...document.querySelectorAll('#mail-modal-recipients input[type=checkbox]:checked')];
+  if (checked.length === 0) { showToast('⚠️ Sélectionne au moins un destinataire'); return; }
+  const to = checked.map(c => c.value).join(',');
+  const monthName = MONTHS_FR[histMonth];
+  const subject = encodeURIComponent('AgroTerrain — Rapport ' + monthName + ' ' + histYear);
+  const body = encodeURIComponent('Bonjour,\n\nVeuillez trouver ci-joint le fichier Excel JDayLCN pour ' + monthName + ' ' + histYear + '.\n\nBonne journée !');
+  closeMailModal();
+  setTimeout(() => {
+    const a = document.createElement('a');
+    a.href = 'mailto:' + to + '?subject=' + subject + '&body=' + body;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast('📧 Appli mail ouverte — joins le fichier Excel !');
+  }, 800);
+}
+
+// ══════════════════════════════════════
+// DISCLAIMER (première visite)
+// ══════════════════════════════════════
+function checkDisclaimer() {
+  if (!localStorage.getItem('agro_disclaimer_seen')) {
+    document.getElementById('disclaimer-modal').style.display = 'flex';
+  }
+}
+
+function closeDisclaimer() {
+  localStorage.setItem('agro_disclaimer_seen', 'true');
+  document.getElementById('disclaimer-modal').style.display = 'none';
+}
+
+// ══════════════════════════════════════
+// DARK MODE
+// ══════════════════════════════════════
+function toggleDark() {
+  darkMode = document.getElementById('dark-toggle').checked;
+  localStorage.setItem('agro_dark', darkMode);
+  document.body.classList.toggle('dark', darkMode);
+}
+
+// ══════════════════════════════════════
+// LOCALISATION + MÉTÉO AUTO
+// ══════════════════════════════════════
+let cityCandidate = null; // {name, lat, lon} trouvé mais pas encore confirmé
+
+function renderSettingsCityLabel() {
+  const el = document.getElementById('city-result');
+  if (!el) return;
+  if (gpsLat && gpsLon) {
+    const cityName = localStorage.getItem('agro_city_name') || '';
+    el.innerHTML = `<span style="color:var(--green)">✅ Ville enregistrée : <strong>${cityName}</strong></span>`;
+  }
+}
+
+async function searchCity() {
+  const val = document.getElementById('set-city').value.trim();
+  if (!val) { showToast('⚠️ Saisis un nom de ville'); return; }
+  const el = document.getElementById('city-result');
+  el.textContent = '🔍 Recherche...';
+  document.getElementById('city-confirm-btn').style.display = 'none';
+  try {
+    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(val)}&count=1&language=fr&format=json`;
+    const res  = await fetch(url);
+    const data = await res.json();
+    if (!data.results?.length) { el.textContent = '❌ Ville introuvable, essaie avec le département (ex: Grasse, Alpes-Maritimes)'; return; }
+    const r = data.results[0];
+    cityCandidate = { name: r.name + (r.admin1 ? ', ' + r.admin1 : ''), lat: r.latitude, lon: r.longitude };
+    el.innerHTML = `📍 Trouvé : <strong>${cityCandidate.name}</strong> (${r.country}) — ${r.latitude.toFixed(3)}, ${r.longitude.toFixed(3)}`;
+    document.getElementById('city-confirm-btn').style.display = 'block';
+  } catch(e) {
+    el.textContent = '❌ Erreur réseau';
+  }
+}
+
+function confirmCity() {
+  if (!cityCandidate) return;
+  gpsLat = cityCandidate.lat;
+  gpsLon = cityCandidate.lon;
+  localStorage.setItem('agro_lat', gpsLat);
+  localStorage.setItem('agro_lon', gpsLon);
+  localStorage.setItem('agro_city_name', cityCandidate.name);
+  document.getElementById('city-result').innerHTML = `<span style="color:var(--green)">✅ Enregistré : <strong>${cityCandidate.name}</strong></span>`;
+  document.getElementById('city-confirm-btn').style.display = 'none';
+  cityCandidate = null;
+  showToast('✅ Ville enregistrée !');
+}
+
+async function fetchMeteo() {
+  if (!gpsLat || !gpsLon) {
+    showToast('⚠️ Configure la position dans Paramètres');
+    return;
+  }
+  showToast('🌤️ Récupération météo...');
+  try {
+    const dateVal = document.getElementById('f-date').value;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${gpsLat}&longitude=${gpsLon}&daily=weathercode,precipitation_sum&start_date=${dateVal}&end_date=${dateVal}&timezone=auto`;
+    const res  = await fetch(url);
+    const data = await res.json();
+    const code = data.daily?.weathercode?.[0];
+    const precip = data.daily?.precipitation_sum?.[0];
+    // Mapping WMO code → option météo
+    const METEO_MAP = {
+      0:'☀️ Grand beau', 1:'☀️ Grand beau', 2:'⛅ Nuageux', 3:'⛅ Nuageux',
+      45:'⛅ Nuageux', 48:'⛅ Nuageux',
+      51:'🌧️ Pluie', 53:'🌧️ Pluie', 55:'🌧️ Pluie',
+      61:'🌧️ Pluie', 63:'🌧️ Pluie', 65:'🌧️ Pluie',
+      71:'🌨️ Grêle', 73:'🌨️ Grêle', 75:'🌨️ Grêle',
+      77:'🌨️ Grêle',
+      80:'🌧️ Pluie', 81:'🌧️ Pluie', 82:'🌧️💨 Pluie + vent',
+      85:'🌨️ Grêle', 86:'🌨️ Grêle',
+      95:'⛈️ Orageux', 96:'⛈️ Orageux', 99:'⛈️ Orageux'
+    };
+    const meteoVal = METEO_MAP[code] || '⛅ Nuageux';
+    document.getElementById('f-meteo').value = meteoVal;
+    if (precip !== null && precip !== undefined && precip > 0) {
+      document.getElementById('f-precipitation').value = precip.toFixed(1);
+    }
+    showToast('✅ Météo récupérée !');
+  } catch(e) {
+    showToast('❌ Erreur réseau');
+  }
+}
+
+// ══════════════════════════════════════
+// ÉVÉNEMENTS
+// ══════════════════════════════════════
+function saveEvents() {
+  localStorage.setItem('agro_events', JSON.stringify(events));
+}
+
+function addEvent() {
+  const date  = document.getElementById('ev-date').value;
+  const label = document.getElementById('ev-label').value.trim();
+  if (!date || !label) { showToast('⚠️ Date et libellé requis'); return; }
+  events.push({ id: Date.now(), date, label });
+  events.sort((a, b) => a.date.localeCompare(b.date));
+  saveEvents();
+  document.getElementById('ev-date').value = '';
+  document.getElementById('ev-label').value = '';
+  renderEvents();
+  scheduleNotifications();
+  showToast('✅ Événement ajouté !');
+}
+
+function deleteEvent(id) {
+  if (!confirm('Voulez-vous supprimer cet événement ?')) return;
+  events = events.filter(e => e.id != id);
+  saveEvents();
+  renderEvents();
+}
+
+function getDaysUntil(dateStr) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const target = new Date(dateStr); target.setHours(0,0,0,0);
+  return Math.round((target - today) / 86400000);
+}
+
+function renderEvents() {
+  const list = document.getElementById('events-list');
+  if (!list) return;
+  if (events.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text2);padding:30px;font-size:0.9rem;">Aucun événement pour l\'instant</div>';
+    return;
+  }
+  // Trier par date, plus proche en premier
+  const sorted = [...events].sort((a,b) => a.date.localeCompare(b.date));
+  list.innerHTML = sorted.map(ev => {
+    const days = getDaysUntil(ev.date);
+    let urgClass = 'urgent-green', color = 'var(--urgent-green)';
+    if (days < 0)  { urgClass = ''; color = 'var(--text2)'; }
+    else if (days <= 3)  { urgClass = 'urgent-red';    color = 'var(--urgent-red)'; }
+    else if (days <= 7)  { urgClass = 'urgent-orange'; color = 'var(--urgent-orange)'; }
+    const dateLabel = new Date(ev.date).toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+    const daysLabel = days < 0 ? 'passé' : days === 0 ? "aujourd'hui !" : `jour${days>1?'s':''}`;
+    return `
+      <div class="event-card ${urgClass}">
+        <div style="flex:1">
+          <div class="event-date-badge">📅 ${dateLabel}</div>
+          <div class="event-label">${ev.label}</div>
+        </div>
+        <div class="event-countdown" style="color:${color}">
+          <div class="event-days-num">${days < 0 ? Math.abs(days) : days}</div>
+          <div class="event-days-label">${daysLabel}</div>
+        </div>
+        <div class="event-delete-btn" onclick="deleteEvent(${ev.id})">✕</div>
+      </div>`;
+  }).join('');
+}
+
+function scheduleNotifications() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') {
+    Notification.requestPermission();
+    return;
+  }
+  if (Notification.permission !== 'granted') return;
+  events.forEach(ev => {
+    const days = getDaysUntil(ev.date);
+    const triggers = [30, 7, 3];
+    triggers.forEach(t => {
+      if (days === t) {
+        new Notification('📅 JDay LCN — Rappel', {
+          body: `${ev.label} dans ${t} jour${t>1?'s':''}`,
+          icon: '/icon-192.png'
+        });
+      }
+    });
+  });
+}
+
+// ══════════════════════════════════════
+// STATISTIQUES — sélecteur de période
+// ══════════════════════════════════════
+
+// statPeriod = { filter:'week'|'month'|'year', refDate: Date }
+let statPeriod = { filter: 'week', refDate: new Date() };
+
+function setStatFilter(f) {
+  statPeriod.filter = f;
+  statPeriod.refDate = new Date(); // reset à aujourd'hui
+  ['week','month','year'].forEach(k => {
+    document.getElementById('sf-' + k)?.classList.toggle('active', k === f);
+  });
+  updatePickers();
+  renderStats();
+}
+
+function shiftPeriod(delta) {
+  const d = new Date(statPeriod.refDate);
+  if (statPeriod.filter === 'week')  d.setDate(d.getDate() + delta * 7);
+  if (statPeriod.filter === 'month') d.setMonth(d.getMonth() + delta);
+  if (statPeriod.filter === 'year')  d.setFullYear(d.getFullYear() + delta);
+  statPeriod.refDate = d;
+  updatePickers();
+  renderStats();
+}
+
+function updatePickers() {
+  const f = statPeriod.filter;
+  const d = statPeriod.refDate;
+  // Montrer/masquer les pickers
+  ['week','month','year'].forEach(k => {
+    const el = document.getElementById('picker-' + k);
+    if (el) el.style.display = k === f ? 'flex' : 'none';
+  });
+  if (f === 'week') {
+    const { start, end } = getWeekBounds(d);
+    const fmt = dt => dt.toLocaleDateString('fr-FR', { day:'numeric', month:'short' });
+    document.getElementById('picker-week-label').textContent =
+      `Sem. du ${fmt(start)} au ${fmt(end)}`;
+  } else if (f === 'month') {
+    document.getElementById('picker-month-label').textContent =
+      MONTHS_FR[d.getMonth()] + ' ' + d.getFullYear();
+  } else {
+    document.getElementById('picker-year-label').textContent = d.getFullYear();
+  }
+}
+
+function getWeekBounds(d) {
+  const start = new Date(d);
+  const day = start.getDay() || 7; // 0=dim → 7
+  start.setDate(start.getDate() - day + 1); // lundi
+  start.setHours(0,0,0,0);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 6); // dimanche
+  end.setHours(23,59,59,999);
+  return { start, end };
+}
+
+function getStatEntries() {
+  const d = statPeriod.refDate;
+  if (statPeriod.filter === 'week') {
+    const { start, end } = getWeekBounds(d);
+    return entries.filter(e => { const dt = new Date(e.date); return dt >= start && dt <= end; });
+  } else if (statPeriod.filter === 'month') {
+    return entries.filter(e => {
+      const dt = new Date(e.date);
+      return dt.getFullYear() === d.getFullYear() && dt.getMonth() === d.getMonth();
+    });
+  } else {
+    return entries.filter(e => new Date(e.date).getFullYear() === d.getFullYear());
+  }
+}
+
+async function renderStats() {
+  updatePickers();
+  const el = document.getElementById('stat-content');
+  if (!el) return;
+  const data = getStatEntries();
+
+  if (data.length === 0) {
+    el.innerHTML = '<div style="text-align:center;color:var(--text2);padding:40px;font-size:0.9rem;">Aucune donnée sur cette période</div>';
+    return;
+  }
+
+  // ── Heures
+  const totalH   = data.reduce((s,e) => s + e.totalHeures, 0);
+  const daysSet  = [...new Set(data.map(e => e.date))];
+  const avgH     = daysSet.length ? (totalH / daysSet.length).toFixed(1) : 0;
+
+  // ── Effectifs
+  const effList  = data.map(e => e.effectif);
+  const avgEff   = (effList.reduce((s,v) => s+v,0) / effList.length).toFixed(1);
+  const maxEff   = Math.max(...effList);
+  const totalPH  = data.reduce((s,e) => s + e.totalHeures, 0); // pers×h = totalHeures
+
+  // ── Lieux
+  const lieuMap  = {};
+  data.forEach(e => { lieuMap[e.lieu] = (lieuMap[e.lieu]||0) + e.totalHeures; });
+
+  // ── Cultures (ignorer les entrées sans culture)
+  const cultMap  = {};
+  data.forEach(e => { if (!e.culture) return; cultMap[e.culture] = (cultMap[e.culture]||0) + e.totalHeures; });
+
+  // ── Arrosage
+  const arrosageData = data.filter(e => e.arrosage != null);
+  const totalArrosage = arrosageData.reduce((s,e) => s + (e.arrosage||0), 0);
+  const parcelleMap = {};
+  data.forEach(e => {
+    const key = zoneDisplay(e.zone) || e.lieu;
+    if (e.arrosage != null) parcelleMap[key] = (parcelleMap[key]||0) + (e.arrosage||0);
+  });
+  const parcelleEntries = Object.entries(parcelleMap).sort((a,b) => b[1]-a[1]);
+
+  // ── Pluvio
+  const pluvioData  = data.filter(e => e.precipitation != null && e.precipitation > 0);
+  const totalPrecip = pluvioData.reduce((s,e) => s + (e.precipitation||0), 0);
+  const joursPluie  = [...new Set(pluvioData.map(e => e.date))].length;
+
+  // ── Météo répartition
+  const meteoMap = {};
+  data.forEach(e => { const k = e.meteo; meteoMap[k] = (meteoMap[k]||0) + 1; });
+
+  // ── Tâches
+  const tacheHMap  = {}; // heures par tâche
+  const tacheNMap  = {}; // nb de fois par tâche
+  data.forEach(e => {
+    if (!e.tache) return;
+    tacheHMap[e.tache] = (tacheHMap[e.tache]||0) + e.totalHeures;
+    tacheNMap[e.tache] = (tacheNMap[e.tache]||0) + 1;
+  });
+  const top3Taches = Object.entries(tacheHMap).sort((a,b)=>b[1]-a[1]).slice(0,3);
+
+  // ── Tableau croisé Tâche × Lieu
+  const allLieux  = [...new Set(data.map(e => e.lieu))].sort();
+  const allTaches = Object.keys(tacheHMap).sort((a,b) => tacheHMap[b]-tacheHMap[a]);
+  const crossData = {}; // crossData[tache][lieu] = heures
+  data.forEach(e => {
+    if (!e.tache || !e.lieu) return;
+    if (!crossData[e.tache]) crossData[e.tache] = {};
+    crossData[e.tache][e.lieu] = (crossData[e.tache][e.lieu]||0) + e.totalHeures;
+  });
+
+  function barChart(map, total) {
+    return Object.entries(map).sort((a,b)=>b[1]-a[1]).map(([label, val]) => {
+      const pct = total ? Math.round(val/total*100) : 0;
+      return `<div class="stat-bar-row">
+        <div class="stat-bar-label" title="${label}">${label}</div>
+		<div class="stat-bar-pct-outside">${pct}%</div>
+        <div class="stat-bar-wrap">${pct > 0 ? '<div class="stat-bar-fill" style="width:'+pct+'%"></div>' : ''}</div>
+        <div class="stat-bar-pct-outside">${val.toFixed(1)}h</div>
+      </div>`;
+    }).join('');
+  }
+
+  el.innerHTML = `
+    <!-- HEURES -->
+    <div class="stat-section">
+      <div class="stat-section-title">⏱ Heures de travail</div>
+      <div class="stat-kpi-grid">
+        <div class="stat-kpi-card"><div class="stat-kpi-label">Total</div><div class="stat-kpi-val">${totalH.toFixed(1)}<span style="font-size:1rem">h</span></div></div>
+        <div class="stat-kpi-card"><div class="stat-kpi-label">Moy / jour</div><div class="stat-kpi-val">${avgH}<span style="font-size:1rem">h</span></div></div>
+        <div class="stat-kpi-card" style="grid-column:1/-1"><div class="stat-kpi-label">Jours travaillés</div><div class="stat-kpi-val">${daysSet.length}<span style="font-size:1rem"> j</span></div></div>
+      </div>
+    </div>
+
+    <!-- EFFECTIFS -->
+    <div class="stat-section">
+      <div class="stat-section-title">👥 Effectifs</div>
+      <div class="stat-kpi-grid">
+        <div class="stat-kpi-card"><div class="stat-kpi-label">Moyenne</div><div class="stat-kpi-val">${avgEff}</div><div class="stat-kpi-sub">pers. / saisie</div></div>
+        <div class="stat-kpi-card"><div class="stat-kpi-label">Maximum</div><div class="stat-kpi-val">${maxEff}</div><div class="stat-kpi-sub">pers.</div></div>
+        <div class="stat-kpi-card" style="grid-column:1/-1"><div class="stat-kpi-label">Total pers × heures</div><div class="stat-kpi-val">${totalPH.toFixed(1)}<span style="font-size:1rem">h</span></div></div>
+      </div>
+    </div>
+
+    <!-- LIEUX -->
+    <div class="stat-section">
+      <div class="stat-section-title">📍 Répartition par lieu (heures)</div>
+      <div class="stat-chart-card">${barChart(lieuMap, totalH)}</div>
+    </div>
+
+    <!-- CULTURES -->
+    <div class="stat-section">
+      <div class="stat-section-title">🌿 Répartition par culture (heures)</div>
+      <div class="stat-chart-card">${barChart(cultMap, totalH)}</div>
+    </div>
+
+    <!-- TÂCHES -->
+    <div class="stat-section">
+      <div class="stat-section-title">🔧 Répartition par tâche (heures)</div>
+      <div class="stat-chart-card">${barChart(tacheHMap, totalH)}</div>
+    </div>
+
+    <!-- TABLEAU CROISÉ TÂCHE × LIEU -->
+    ${allTaches.length > 0 && allLieux.length > 0 ? `
+    <div class="stat-section">
+      <div class="stat-section-title">📊 Tâche × Lieu (heures)</div>
+
+      <!-- Version tableau -->
+      <div class="stat-chart-card cross-table-section">
+        <div class="cross-table-wrap">
+          <table class="cross-table">
+            <thead><tr>
+              <th>Tâche</th>
+              ${allLieux.map(l => '<th>' + l + '</th>').join('')}
+              <th>Total</th>
+            </tr></thead>
+            <tbody>
+              ${allTaches.map(t => {
+                const rowTotal = allLieux.reduce((s,l) => s + (crossData[t]?.[l]||0), 0);
+                return '<tr>'
+                  + '<td>' + t + '</td>'
+                  + allLieux.map(l => {
+                      const v = crossData[t]?.[l]||0;
+                      return '<td>' + (v>0 ? v.toFixed(1)+'h' : '—') + '</td>';
+                    }).join('')
+                  + '<td class="cross-total">' + rowTotal.toFixed(1) + 'h</td>'
+                  + '</tr>';
+              }).join('')}
+              <tr style="border-top:2px solid var(--green)">
+                <td style="font-weight:700">Total</td>
+                ${allLieux.map(l => {
+                  const colTotal = allTaches.reduce((s,t) => s + (crossData[t]?.[l]||0), 0);
+                  return '<td class="cross-total">' + colTotal.toFixed(1) + 'h</td>';
+                }).join('')}
+                <td class="cross-total">${totalH.toFixed(1)}h</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>` : ''}
+
+    <!-- ARROSAGE -->
+    <div class="stat-section">
+      <div class="stat-section-title">💧 Arrosage</div>
+      <div class="stat-kpi-grid">
+        <div class="stat-kpi-card" style="grid-column:1/-1"><div class="stat-kpi-label">Total arrosage</div><div class="stat-kpi-val">${totalArrosage.toFixed(0)}<span style="font-size:1rem"> L</span></div></div>
+        ${parcelleEntries.length > 0 ? `
+        <div class="stat-kpi-card"><div class="stat-kpi-label">+ arrosée</div><div class="stat-kpi-val" style="font-size:1rem">${parcelleEntries[0][0]}</div><div class="stat-kpi-sub">${parcelleEntries[0][1]} L</div></div>
+        <div class="stat-kpi-card"><div class="stat-kpi-label">- arrosée</div><div class="stat-kpi-val" style="font-size:1rem">${parcelleEntries[parcelleEntries.length-1][0]}</div><div class="stat-kpi-sub">${parcelleEntries[parcelleEntries.length-1][1]} L</div></div>` : ''}
+      </div>
+    </div>
+
+    <!-- PLUVIOMÉTRIE -->
+    <div class="stat-section">
+      <div class="stat-section-title">🌧️ Pluviométrie <span id="era5-loading" style="font-size:0.7rem;color:var(--text2);font-weight:400;"></span></div>
+      <div class="stat-kpi-grid" id="pluvio-kpi">
+        <div class="stat-kpi-card"><div class="stat-kpi-label">Total précip. (saisies)</div><div class="stat-kpi-val">${totalPrecip.toFixed(1)}<span style="font-size:1rem"> mm</span></div><div class="stat-kpi-sub">🟡 données saisies</div></div>
+        <div class="stat-kpi-card"><div class="stat-kpi-label">Jours de pluie</div><div class="stat-kpi-val">${joursPluie}<span style="font-size:1rem"> j</span></div></div>
+      </div>
+    </div>
+
+    <!-- MÉTÉO -->
+    <div class="stat-section">
+      <div class="stat-section-title">☀️ Répartition météo</div>
+      <div class="stat-meteo-grid">
+        ${Object.entries(meteoMap).sort((a,b)=>b[1]-a[1]).map(([m,n]) => `
+          <div class="stat-meteo-chip">
+            <div class="stat-meteo-emoji">${m.split(' ')[0]}</div>
+            <div class="stat-meteo-count">${n}</div>
+            <div class="stat-meteo-label">${m.split(' ').slice(1).join(' ')}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  `;
+  loadERA5ForStats();
+}
+
+async function loadERA5ForStats() {
+  const loadEl = document.getElementById('era5-loading');
+  if (!loadEl || !gpsLat) {
+    return;
+  }
+  loadEl.textContent = '⏳ données réelles...';
+  const d = statPeriod.refDate;
+  let dateStart, dateEnd;
+  if (statPeriod.filter === 'week') {
+    const { start, end } = getWeekBounds(d);
+    dateStart = start.toISOString().split('T')[0];
+    dateEnd   = end.toISOString().split('T')[0];
+  } else if (statPeriod.filter === 'month') {
+    dateStart = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-01';
+    dateEnd   = new Date(d.getFullYear(), d.getMonth()+1, 0).toISOString().split('T')[0];
+  } else {
+    dateStart = d.getFullYear() + '-01-01';
+    dateEnd   = d.getFullYear() + '-12-31';
+  }
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 5);
+  const cutoffStr = cutoff.toISOString().split('T')[0];
+  if (new Date(dateEnd) > cutoff) {
+    dateEnd = cutoffStr;
+  }
+  if (dateStart > dateEnd) {
+    loadEl.textContent = '(pas encore disponible)';
+    return;
+  }
+  const era5 = await fetchERA5Precip(dateStart, dateEnd);
+  loadEl.textContent = '';
+  if (!era5) {
+    return;
+  }
+  const totalERA5 = Object.values(era5).reduce((s, v) => s + (v || 0), 0);
+  const joursERA5 = Object.values(era5).filter(v => v > 0).length;
+  const kpiEl = document.getElementById('pluvio-kpi');
+  if (!kpiEl) return;
+  const card = document.createElement('div');
+  card.className = 'stat-kpi-card';
+  card.style.gridColumn = '1/-1';
+  card.style.borderColor = 'var(--green)';
+  card.innerHTML = '<div class="stat-kpi-label">Total réel ERA5 🔵</div>'
+    + '<div class="stat-kpi-val">' + totalERA5.toFixed(1) + '<span style="font-size:1rem"> mm</span></div>'
+    + '<div class="stat-kpi-sub">' + joursERA5 + ' j de pluie · Open-Meteo ERA5 (données réelles)</div>';
+  kpiEl.appendChild(card);
+}
+
+// ══════════════════════════════════════
+// MULTI-ZONE
+// ══════════════════════════════════════
+function zoneDisplay(zone) {
+  if (!zone) return '';
+  if (Array.isArray(zone)) return zone.filter(Boolean).join(' / ');
+  return zone;
+}
+function initZoneFields(zones) {
+  zoneCount = zones.length || 1;
+  const list = document.getElementById('zone-list');
+  if (!list) return;
+  list.innerHTML = '';
+  (zones.length ? zones : ['']).forEach((val, idx) => list.appendChild(buildZoneRow(val, idx)));
+  updateZoneAddBtn();
+}
+function buildZoneRow(val, idx) {
+  const row = document.createElement('div');
+  row.className = 'zone-row';
+  row.dataset.idx = idx;
+  row.innerHTML = '<input type="text" class="form-input zone-input" placeholder="Ex : Parcelle ' + (idx+1) + '" value="' + (val||'') + '">'
+    + (idx > 0 ? '<button type="button" class="zone-remove-btn" onclick="removeZoneField(this)">✕</button>'
+                : '<div style="width:34px;flex-shrink:0;"></div>');
+  return row;
+}
+function addZoneField() {
+  if (zoneCount >= 5) return;
+  zoneCount++;
+  document.getElementById('zone-list').appendChild(buildZoneRow('', zoneCount - 1));
+  updateZoneAddBtn();
+}
+function removeZoneField(btn) {
+  if (!confirm('Supprimer cette zone ?')) return;
+  btn.closest('.zone-row').remove();
+  zoneCount--;
+  document.querySelectorAll('#zone-list .zone-row').forEach((row, i) => {
+    row.dataset.idx = i;
+    const inp = row.querySelector('.zone-input');
+    if (inp && !inp.value) inp.placeholder = 'Ex : Parcelle ' + (i+1);
+  });
+  updateZoneAddBtn();
+}
+function updateZoneAddBtn() {
+  const btn = document.getElementById('zone-add-btn');
+  if (!btn) return;
+  btn.disabled    = zoneCount >= 5;
+  btn.textContent = zoneCount >= 5 ? '✋ Maximum 5 zones atteint' : '＋ Ajouter une zone';
+}
+
+// ══════════════════════════════════════
+// MÉTÉO-FRANCE — RATE LIMITER (max 90/min)
+// ══════════════════════════════════════
+function mfRateCheck() {
+  const now = Date.now();
+  const w   = JSON.parse(localStorage.getItem('agro_mf_rate') || '{"ts":0,"count":0}');
+  if (now - w.ts > 60000) {
+    localStorage.setItem('agro_mf_rate', JSON.stringify({ ts: now, count: 1 }));
+    return true;
+  }
+  if (w.count >= 90) {
+    const wait = Math.ceil((60000 - (now - w.ts)) / 1000);
+    showToast('⚠️ Quota MF atteint. Réessaie dans ' + wait + 's');
+    return false;
+  }
+  w.count++;
+  localStorage.setItem('agro_mf_rate', JSON.stringify(w));
+  return true;
+}
+
+// ══════════════════════════════════════
+// MÉTÉO-FRANCE — TOKENS
+// ══════════════════════════════════════
+function saveToken(type) {
+  const val = document.getElementById('set-token-' + type).value.trim();
+  if (!val) { showToast('⚠️ Token vide'); return; }
+  if (type === 'obs') { mfTokenObs = val; localStorage.setItem('agro_mf_token_obs', val); }
+  else                { mfTokenClim = val; localStorage.setItem('agro_mf_token_clim', val); }
+  renderTokenStatus();
+  showToast('✅ Token enregistré !');
+}
+function renderTokenStatus() {
+  const obsEl  = document.getElementById('token-obs-status');
+  const climEl = document.getElementById('token-clim-status');
+  if (obsEl)  obsEl.innerHTML  = mfTokenObs  ? '<span style="color:var(--green)">✅ Token configuré</span>' : '<span style="color:var(--rose)">❌ Non configuré</span>';
+  if (climEl) climEl.innerHTML = mfTokenClim ? '<span style="color:var(--green)">✅ Token configuré</span>' : '<span style="color:var(--rose)">❌ Non configuré</span>';
+  const oi = document.getElementById('set-token-obs');
+  const ci = document.getElementById('set-token-clim');
+  if (oi && mfTokenObs)  oi.placeholder = '••••••••••••••••';
+  if (ci && mfTokenClim) ci.placeholder = '••••••••••••••••';
+}
+
+// ══════════════════════════════════════
+// MÉTÉO-FRANCE — STATION PROCHE (cache 24h)
+// ══════════════════════════════════════
+async function getMFNearestStation() {
+  const cached = JSON.parse(localStorage.getItem('agro_mf_station') || 'null');
+  if (cached && Date.now() - cached.ts < 86400000) return cached.id;
+  if (!mfTokenObs || !gpsLat || !gpsLon) return null;
+  if (!mfRateCheck()) return null;
+  try {
+    const res  = await fetch('https://public-api.meteofrance.fr/public/DPObs/v1/liste-stations/quotidienne?lat=' + gpsLat + '&lon=' + gpsLon + '&dist=50000&apikey=' + mfTokenObs, { headers: { Accept: 'application/json' } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data?.length) return null;
+    localStorage.setItem('agro_mf_station', JSON.stringify({ id: data[0].id, ts: Date.now(), name: data[0].nom || data[0].id }));
+    return data[0].id;
+  } catch { return null; }
+}
+
+// ══════════════════════════════════════
+// MÉTÉO-FRANCE — CONSOLIDATION AUTO
+// ══════════════════════════════════════
+async function consolidatePrecipitations() {
+  if (!mfTokenObs) return;
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 2);
+  const toConsolidate = entries.filter(e => e.precipitation != null && e.precipSource === 'forecast' && new Date(e.date) < cutoff);
+  if (!toConsolidate.length) return;
+  const stationId = await getMFNearestStation();
+  if (!stationId) return;
+  let consolidated = 0;
+  for (const entry of toConsolidate) {
+    if (!mfRateCheck()) break;
+    try {
+      const res  = await fetch('https://public-api.meteofrance.fr/public/DPObs/v1/station/infrahoraire-6m?id_station=' + stationId + '&date_deb_periode=' + encodeURIComponent(entry.date + 'T00:00:00Z') + '&date_fin_periode=' + encodeURIComponent(entry.date + 'T23:59:59Z') + '&apikey=' + mfTokenObs, { headers: { Accept: 'application/json' } });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const total = data.reduce((s, o) => { const v = parseFloat(o.rr ?? o.RR ?? 0); return s + (isNaN(v) ? 0 : v); }, 0);
+      const idx = entries.findIndex(e => e.id === entry.id);
+      if (idx !== -1) { entries[idx].precipitation = parseFloat(total.toFixed(1)); entries[idx].precipSource = 'confirmed'; consolidated++; }
+    } catch { /* silencieux */ }
+  }
+  if (consolidated > 0) { save(); showToast('🔵 ' + consolidated + ' précip. consolidée(s) via MF'); }
+}
+
+// ══════════════════════════════════════
+// OPEN-METEO ERA5 — PLUVIO RÉELLE
+// ══════════════════════════════════════
+async function fetchERA5Precip(dateStart, dateEnd) {
+  if (!gpsLat || !gpsLon) { return null; }
+  const url = 'https://archive-api.open-meteo.com/v1/archive?latitude=' + gpsLat + '&longitude=' + gpsLon + '&start_date=' + dateStart + '&end_date=' + dateEnd + '&daily=precipitation_sum&timezone=auto';
+  try {
+    const res  = await fetch(url);
+    if (!res.ok) { return null; }
+    const data = await res.json();
+    if (!data.daily?.precipitation_sum) { return null; }
+    const result = {};
+    data.daily.time.forEach((d, i) => { result[d] = data.daily.precipitation_sum[i] ?? 0; });
+    return result;
+  } catch(e) { return null; }
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+initHome();
+scheduleNotifications();
+setTimeout(() => consolidatePrecipitations(), 3000);
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js');
+  });
+}
+</script>
+</body>
+</html>
