@@ -1054,7 +1054,7 @@ body.dark .event-card.urgent-green { background:#0f2a18; }
     <div class="form-section-title">🔑 Tokens Météo-France</div>
     <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
       <div style="font-size:0.78rem;color:var(--text2);margin-bottom:12px;line-height:1.5;">
-        Token obtenu sur <strong>portail-api.meteofrance.fr</strong> → <strong>Package Observations</strong>. Utilisé pour la consolidation automatique des précipitations (données réelles J-2+).
+        Token obtenu sur <strong>portail-api.meteofrance.fr</strong>. Conservé pour la future version serveur (v2.0). La consolidation automatique utilise actuellement ERA5 (Open-Meteo).
       </div>
       <div style="margin-bottom:10px;">
         <label class="form-label">📦 Package Observations</label>
@@ -1528,7 +1528,7 @@ function buildDetailGrid(entry) {
     <div class="detail-item"><div class="detail-item-label">Effectif</div><div class="detail-item-val">${entry.effectif} pers.</div></div>
     <div class="detail-item"><div class="detail-item-label">Total heures</div><div class="detail-item-val" style="color:var(--green)">${entry.totalHeures}h</div></div>
     <div class="detail-item"><div class="detail-item-label">Tâche</div><div class="detail-item-val">${entry.tache}</div></div>
-    ${entry.precipitation != null ? `<div class="detail-item"><div class="detail-item-label">Précipitations</div><div class="detail-item-val" style="color:#3b82f6">${entry.precipitation} mm <span class="precip-badge ${entry.precipSource === 'confirmed' ? 'confirmed' : 'forecast'}">${entry.precipSource === 'confirmed' ? '🔵 MF réel' : '🟡 Estimé'}</span></div></div>` : ''}
+    ${entry.precipitation != null ? `<div class="detail-item"><div class="detail-item-label">Précipitations</div><div class="detail-item-val" style="color:#3b82f6">${entry.precipitation} mm <span class="precip-badge ${entry.precipSource === 'confirmed' ? 'confirmed' : 'forecast'}">${entry.precipSource === 'confirmed' ? '🔵 ERA5 réel' : '🟡 Estimé'}</span></div></div>` : ''}
     ${entry.era5precip != null ? `<div class="detail-item"><div class="detail-item-label">ERA5 ce jour</div><div class="detail-item-val" style="color:#059669">📊 ${entry.era5precip.toFixed(1)} mm <span style="font-size:0.65rem;color:var(--text2)">Open-Meteo ERA5</span></div></div>` : ''}
     ${entry.arrosage != null ? `<div class="detail-item"><div class="detail-item-label">Arrosage</div><div class="detail-item-val" style="color:#3b82f6">${entry.arrosage} L</div></div>` : ''}
     ${entry.notes ? `<div class="detail-notes">"${entry.notes}"</div>` : ''}
@@ -1631,7 +1631,7 @@ function exportExcel(withWater = true) {
       dayEntries.forEach(e => {
         grandTotal += e.totalHeures;
         if (withWater) {
-          const precipSrcLabel = e.precipSource === 'confirmed' ? '🔵 MF réel' : e.precipSource === 'forecast' ? '🟡 Estimé' : e.precipitation != null ? '🖊️ Manuel' : '';
+          const precipSrcLabel = e.precipSource === 'confirmed' ? '🔵 ERA5 réel' : e.precipSource === 'forecast' ? '🟡 Estimé' : e.precipitation != null ? '🖊️ Manuel' : '';
           rows.push([dateLabel, e.lieu, stripEmoji(e.meteo), e.precipitation != null ? e.precipitation : '', precipSrcLabel, e.arrosage != null ? e.arrosage : '', e.tache, e.culture, zoneDisplay(e.zone), e.heures, e.effectif, e.totalHeures, e.notes || '']);
         } else {
           rows.push([dateLabel, e.lieu, stripEmoji(e.meteo), e.tache, e.culture, zoneDisplay(e.zone), e.heures, e.effectif, e.totalHeures, e.notes || '']);
@@ -2315,7 +2315,7 @@ async function renderStats() {
       <div class="stat-kpi-grid" id="pluvio-kpi">
         <div class="stat-kpi-card"><div class="stat-kpi-label">🖊️ Saisi manuellement</div><div class="stat-kpi-val">${totalManuel.toFixed(1)}<span style="font-size:1rem"> mm</span></div></div>
         <div class="stat-kpi-card"><div class="stat-kpi-label">🟡 Estimé Open-Meteo</div><div class="stat-kpi-val">${totalEstime.toFixed(1)}<span style="font-size:1rem"> mm</span></div><div class="stat-kpi-sub">prévision, pas encore confirmé</div></div>
-        <div class="stat-kpi-card"><div class="stat-kpi-label">🔵 Réel Météo-France</div><div class="stat-kpi-val">${totalConfirme.toFixed(1)}<span style="font-size:1rem"> mm</span></div><div class="stat-kpi-sub">données officielles confirmées</div></div>
+        <div class="stat-kpi-card"><div class="stat-kpi-label">🔵 Réel Météo-France</div><div class="stat-kpi-val">${totalConfirme.toFixed(1)}<span style="font-size:1rem"> mm</span></div><div class="stat-kpi-sub">données ERA5 consolidées</div></div>
         <div class="stat-kpi-card"><div class="stat-kpi-label">☔ Jours de pluie</div><div class="stat-kpi-val">${joursPluie}<span style="font-size:1rem"> j</span></div><div class="stat-kpi-sub">jours avec précip > 0</div></div>
         <div class="stat-kpi-card" style="grid-column:1/-1;border:1.5px dashed var(--border);opacity:0.7;" id="era5-placeholder">
           <div class="stat-kpi-label">📊 ERA5 — toute la période</div>
