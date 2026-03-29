@@ -2491,41 +2491,57 @@ function renderTokenStatus() {
 // ══════════════════════════════════════
 async function getMFNearestStation() {
   const cached = JSON.parse(localStorage.getItem('agro_mf_station') || 'null');
-  if (cached && Date.now() - cached.ts < 86400000) return cached.id;
-  if (!mfTokenObs || !gpsLat || !gpsLon) return null;
+  if (cached && Date.now() - cached.ts < 86400000) { console.log('[MF] Station en cache :', cached.id, cached.name); return cached.id; }
+  if (!mfTokenObs || !gpsLat || !gpsLon) { console.warn('[MF] getMFNearestStation — token ou GPS manquant'); return null; }
   if (!mfRateCheck()) return null;
   try {
-    const res  = await fetch('https://public-api.meteofrance.fr/public/DPObs/v1/liste-stations/quotidienne?lat=' + gpsLat + '&lon=' + gpsLon + '&dist=50000&apikey=' + mfTokenObs, { headers: { Accept: 'application/json' } });
-    if (!res.ok) return null;
+    const url = 'https://public-api.meteofrance.fr/public/DPObs/v1/liste-stations/quotidienne?lat=' + gpsLat + '&lon=' + gpsLon + '&dist=50000&apikey=' + mfTokenObs;
+    console.log('[MF] Recherche station :', url);
+    const res  = await fetch(url, { headers: { Accept: 'application/json' } });
+    console.log('[MF] Stations HTTP', res.status);
+    if (!res.ok) { const txt = await res.text(); console.warn('[MF] Erreur stations :', txt.substring(0,200)); return null; }
     const data = await res.json();
+    console.log('[MF] Stations trouvées :', data?.length, '— première :', JSON.stringify(data?.[0]));
     if (!data?.length) return null;
     localStorage.setItem('agro_mf_station', JSON.stringify({ id: data[0].id, ts: Date.now(), name: data[0].nom || data[0].id }));
     return data[0].id;
-  } catch { return null; }
+  } catch(e) { console.error('[MF] Exception station :', e.message); return null; }
 }
 
 // ══════════════════════════════════════
 // MÉTÉO-FRANCE — CONSOLIDATION AUTO
 // ══════════════════════════════════════
 async function consolidatePrecipitations() {
-  if (!mfTokenObs) return;
+  if (!mfTokenObs) { console.log('[MF] Pas de token — consolidation ignorée'); return; }
   const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 2);
   const toConsolidate = entries.filter(e => e.precipitation != null && e.precipSource === 'forecast' && new Date(e.date) < cutoff);
-  if (!toConsolidate.length) return;
+  console.log('[MF] Saisies à consolider :', toConsolidate.length, toConsolidate.map(e => e.date));
+  if (!toConsolidate.length) { console.log('[MF] Rien à consolider'); return; }
   const stationId = await getMFNearestStation();
-  if (!stationId) return;
+  console.log('[MF] Station ID :', stationId);
+  if (!stationId) { console.warn('[MF] Pas de station trouvée — arrêt'); return; }
   let consolidated = 0;
   for (const entry of toConsolidate) {
     if (!mfRateCheck()) break;
     try {
-      const res  = await fetch('https://public-api.meteofrance.fr/public/DPObs/v1/station/infrahoraire-6m?id_station=' + stationId + '&date_deb_periode=' + encodeURIComponent(entry.date + 'T00:00:00Z') + '&date_fin_periode=' + encodeURIComponent(entry.date + 'T23:59:59Z') + '&apikey=' + mfTokenObs, { headers: { Accept: 'application/json' } });
-      if (!res.ok) continue;
+      const url = 'https://public-api.meteofrance.fr/public/DPObs/v1/station/infrahoraire-6m?id_station=' + stationId + '&date_deb_periode=' + encodeURIComponent(entry.date + 'T00:00:00Z') + '&date_fin_periode=' + encodeURIComponent(entry.date + 'T23:59:59Z') + '&apikey=' + mfTokenObs;
+      console.log('[MF] Appel API pour', entry.date, ':', url);
+      const res  = await fetch(url, { headers: { Accept: 'application/json' } });
+      console.log('[MF] HTTP', res.status, 'pour', entry.date);
+      if (!res.ok) {
+        const txt = await res.text();
+        console.warn('[MF] Erreur', res.status, ':', txt.substring(0, 200));
+        continue;
+      }
       const data = await res.json();
+      console.log('[MF] Données reçues pour', entry.date, ':', data?.length, 'obs — extrait:', JSON.stringify(data?.[0]));
       const total = data.reduce((s, o) => { const v = parseFloat(o.rr ?? o.RR ?? 0); return s + (isNaN(v) ? 0 : v); }, 0);
+      console.log('[MF] Total précip calculé pour', entry.date, ':', total, 'mm');
       const idx = entries.findIndex(e => e.id === entry.id);
       if (idx !== -1) { entries[idx].precipitation = parseFloat(total.toFixed(1)); entries[idx].precipSource = 'confirmed'; consolidated++; }
-    } catch { /* silencieux */ }
+    } catch(e) { console.error('[MF] Exception pour', entry.date, ':', e.message); }
   }
+  console.log('[MF] Consolidation terminée :', consolidated, 'saisie(s) mises à jour');
   if (consolidated > 0) { save(); showToast('🔵 ' + consolidated + ' précip. consolidée(s) via MF'); }
 }
 
