@@ -803,11 +803,14 @@ body.dark .event-card.urgent-green { background:#0f2a18; }
         <label class="form-label">Lieu</label>
         <select class="form-select" id="f-lieu">
           <option value="">— Choisir —</option>
+		  <option>Callian</option>
           <option>Château</option>
-          <option>Callian</option>
-          <option>Montauroux</option>
-          <option>Mas Ricardenque</option>
           <option>Clos Notre Dame</option>
+		  <option>Lidl</option>
+		  <option>Mas Ricardenque</option>
+          <option>Montauroux</option>
+          
+          
         </select>
       </div>
       <div class="form-group">
@@ -843,27 +846,30 @@ body.dark .event-card.urgent-green { background:#0f2a18; }
         <label class="form-label">Tâche</label>
         <select class="form-input" id="f-tache">
           <option value="">— Choisir une tâche —</option>
-          <option value="Amendement">Amendement</option>
-          <option value="Butage">Butage</option>
-          <option value="Désherbage">Désherbage</option>
-          <option value="Récolte">Récolte</option>
-          <option value="Plantation">Plantation</option>
-          <option value="Taille">Taille</option>
-          <option value="Mise en bouteille">Mise en bouteille</option>
-          <option value="Vendanges">Vendanges</option>
-          <option value="Palissage">Palissage</option>
-          <option value="Réparation">Réparation</option>
-          <option value="Mécanique">Mécanique</option>
-          <option value="Administratif">Administratif</option>
-          <option value="Travail du sol">Travail du sol</option>
-          <option value="Arrosage">Arrosage</option>
-          <option value="Engrais">Engrais</option>
-          <option value="Traitement">Traitement</option>
-          <option value="Nettoyage">Nettoyage</option>
-          <option value="Cheval">Cheval</option>
-          <option value="Broyage">Broyage</option>
-          <option value="Livraison">Livraison</option>
-          <option value="Clôturage">Clôturage</option>
+			<option value="Administratif">Administratif</option>
+			<option value="Amendement">Amendement</option>
+			<option value="Arrosage">Arrosage</option>
+			<option value="Broyage">Broyage</option>
+			<option value="Butage">Butage</option>
+			<option value="Cheval">Cheval</option>
+			<option value="Clôturage">Clôturage</option>
+			<option value="Décavaillonnage">Décavaillonnage</option>
+			<option value="Désherbage">Désherbage</option>
+			<option value="Engrais">Engrais</option>
+			<option value="Livraison">Livraison</option>
+			<option value="Mécanique">Mécanique</option>
+			<option value="Mise en bouteille">Mise en bouteille</option>
+			<option value="Nettoyage">Nettoyage</option>
+			<option value="Palissage">Palissage</option>
+			<option value="Plantation">Plantation</option>
+			<option value="Récolte">Récolte</option>
+			<option value="Réparation">Réparation</option>
+			<option value="Semis">Semis</option>
+			<option value="Taille">Taille</option>
+			<option value="Traitement">Traitement</option>
+			<option value="Travail du sol">Travail du sol</option>
+			<option value="Tuteurage">Tuteurage</option>
+			<option value="Vendanges">Vendanges</option>
         </select>
       </div>
     </div>
@@ -1061,17 +1067,36 @@ body.dark .event-card.urgent-green { background:#0f2a18; }
 
     </div>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
-      <div style="font-size:0.9rem;font-weight:600;margin-bottom:4px;">Informations relatives à Open-Meteo</div>
-      <div style="font-size:0.78rem;color:var(--text2);line-height:1.8;">Open-Meteo agrège plusieurs modèles météorologiques numériques (principalement ECMWF et GFS) qui sont alimentés en continu par des milliers de sources : stations au sol, satellites, ballons-sondes, bouées océaniques. Ces modèles découpent l'atmosphère terrestre en une grille tridimensionnelle et simulent son évolution heure par heure en résolvant des équations physiques complexes (pression, température, humidité, vent à différentes altitudes). Quand on appelle l'API avec des coordonnées GPS et une date, Open-Meteo retourne les valeurs interpolées du point de grille le plus proche — résolution d'environ 1 à 11 km selon le modèle. On récupère deux informations : le code météo WMO (un chiffre standardisé internationalement qui décrit le type de temps : 0 = ciel dégagé, 61 = pluie modérée, 95 = orage, etc.) qu'on traduit ensuite en emoji lisible, et les précipitations cumulées en mm prévues sur la journée entière.</div>
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:8px;">🌦️ Comment fonctionne la pluviométrie ?</div>
+      <div style="font-size:0.78rem;color:var(--text2);line-height:1.8;">
+        Les précipitations dans JDay LCN peuvent venir de <strong>3 sources différentes</strong>, classées du moins au plus fiable :<br><br>
+        <strong>🖊️ Saisie manuelle</strong> — valeur entrée directement par l'utilisateur dans le formulaire.<br><br>
+        <strong>🟡 Estimation Open-Meteo</strong> — récupérée via le bouton Météo Auto. C'est une prévision basée sur des modèles météo (ECMWF, GFS) à partir des coordonnées GPS. Fiable à ~80%, utile pour le jour même.<br><br>
+        <strong>🔵 Données réelles Météo-France</strong> — après 48h, l'app remplace automatiquement l'estimation par la vraie mesure de la station météo la plus proche. C'est la donnée officielle, la plus précise.<br><br>
+        <strong>📊 ERA5 (stats uniquement)</strong> — pour les statistiques, l'app récupère les données ERA5, une reconstruction climatique européenne. Elle couvre tous les jours de la période, même ceux sans saisie (weekends...), pour une pluvio totale réelle sur le mois ou la semaine.
+      </div>
+    </div>
+
+    <!-- SECTION DÉVELOPPEUR -->
+    <div class="form-section-title" style="color:var(--rose);">⚠️ Zone Développeur</div>
+    <div style="background:#fff5f5;border:1.5px solid var(--rose);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
+      <div style="font-size:0.72rem;color:var(--rose);font-weight:700;margin-bottom:6px;">🚨 DANGER — Ne pas toucher, sinon la matriarche te tombe dessus</div>
+      <div style="font-size:0.72rem;color:var(--text2);margin-bottom:12px;line-height:1.5;">
+        Ces outils sont réservés aux tests techniques. Ils n'affectent pas tes données.
+      </div>
+      <button onclick="testNotification()" style="width:100%;padding:11px;background:var(--rose);color:#fff;border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;margin-bottom:8px;">
+        🔔 Tester une notification maintenant
+      </button>
+      <div id="notif-debug-result" style="font-size:0.72rem;color:var(--text2);min-height:16px;text-align:center;"></div>
     </div>
 
     <!-- ENCART VERSION -->
     <div style="background:var(--green-bg);border:1.5px solid var(--green);border-radius:14px;padding:16px 18px;margin-bottom:12px;text-align:center;">
       <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--green);font-weight:700;margin-bottom:6px;">Version de l'application</div>
-      <div style="font-size:1.4rem;font-weight:800;color:var(--green);">v1.0</div>
-      <div style="font-size:0.78rem;color:var(--text2);margin-top:4px;">Mise à jour le <strong>17 mars 2026</strong></div>
+      <div style="font-size:1.4rem;font-weight:800;color:var(--green);">v1.1</div>
+      <div style="font-size:0.78rem;color:var(--text2);margin-top:4px;">Mise à jour le <strong>29 mars 2026</strong></div>
       <div style="font-size:0.7rem;color:var(--text2);margin-top:8px;line-height:1.5;">
-        Multi-zone · Météo-France · ERA5 stats · Tâches & stats · PWA optimisée
+        Pluvio 4 sources · ERA5 toujours affiché · Météo dédoublonnée · Debug notifs
       </div>
     </div>
 
@@ -1503,7 +1528,8 @@ function buildDetailGrid(entry) {
     <div class="detail-item"><div class="detail-item-label">Effectif</div><div class="detail-item-val">${entry.effectif} pers.</div></div>
     <div class="detail-item"><div class="detail-item-label">Total heures</div><div class="detail-item-val" style="color:var(--green)">${entry.totalHeures}h</div></div>
     <div class="detail-item"><div class="detail-item-label">Tâche</div><div class="detail-item-val">${entry.tache}</div></div>
-    ${entry.precipitation != null ? `<div class="detail-item"><div class="detail-item-label">Précipitations</div><div class="detail-item-val" style="color:#3b82f6">${entry.precipitation} mm <span class="precip-badge ${entry.precipSource === 'confirmed' ? 'confirmed' : 'forecast'}">${entry.precipSource === 'confirmed' ? '🔵 Confirmé' : '🟡 Prévision'}</span></div></div>` : ''}
+    ${entry.precipitation != null ? `<div class="detail-item"><div class="detail-item-label">Précipitations</div><div class="detail-item-val" style="color:#3b82f6">${entry.precipitation} mm <span class="precip-badge ${entry.precipSource === 'confirmed' ? 'confirmed' : 'forecast'}">${entry.precipSource === 'confirmed' ? '🔵 MF réel' : '🟡 Estimé'}</span></div></div>` : ''}
+    ${entry.era5precip != null ? `<div class="detail-item"><div class="detail-item-label">ERA5 ce jour</div><div class="detail-item-val" style="color:#059669">📊 ${entry.era5precip.toFixed(1)} mm <span style="font-size:0.65rem;color:var(--text2)">Open-Meteo ERA5</span></div></div>` : ''}
     ${entry.arrosage != null ? `<div class="detail-item"><div class="detail-item-label">Arrosage</div><div class="detail-item-val" style="color:#3b82f6">${entry.arrosage} L</div></div>` : ''}
     ${entry.notes ? `<div class="detail-notes">"${entry.notes}"</div>` : ''}
   </div>`;
@@ -1582,7 +1608,7 @@ function exportExcel(withWater = true) {
   const rows = [];
 
   const headers = withWater
-    ? ['Date','Lieu','Météo','Précip. (mm)','Arrosage (L)','Tâche','Culture','Zone','Heures','Effectif','Total heures','Notes']
+    ? ['Date','Lieu','Météo','Précip. (mm)','Source précip','Arrosage (L)','Tâche','Culture','Zone','Heures','Effectif','Total heures','Notes']
     : ['Date','Lieu','Météo','Tâche','Culture','Zone','Heures','Effectif','Total heures','Notes'];
 
   rows.push(['MOIS', monthName + ' ' + histYear]);
@@ -1605,7 +1631,8 @@ function exportExcel(withWater = true) {
       dayEntries.forEach(e => {
         grandTotal += e.totalHeures;
         if (withWater) {
-          rows.push([dateLabel, e.lieu, stripEmoji(e.meteo), e.precipitation != null ? e.precipitation : '', e.arrosage != null ? e.arrosage : '', e.tache, e.culture, zoneDisplay(e.zone), e.heures, e.effectif, e.totalHeures, e.notes || '']);
+          const precipSrcLabel = e.precipSource === 'confirmed' ? '🔵 MF réel' : e.precipSource === 'forecast' ? '🟡 Estimé' : e.precipitation != null ? '🖊️ Manuel' : '';
+          rows.push([dateLabel, e.lieu, stripEmoji(e.meteo), e.precipitation != null ? e.precipitation : '', precipSrcLabel, e.arrosage != null ? e.arrosage : '', e.tache, e.culture, zoneDisplay(e.zone), e.heures, e.effectif, e.totalHeures, e.notes || '']);
         } else {
           rows.push([dateLabel, e.lieu, stripEmoji(e.meteo), e.tache, e.culture, zoneDisplay(e.zone), e.heures, e.effectif, e.totalHeures, e.notes || '']);
         }
@@ -1619,14 +1646,14 @@ function exportExcel(withWater = true) {
   if (!hasSaisie) { showToast('⚠️ Aucune saisie ce mois-ci'); return; }
 
   rows.push([]);
-  const totalCol = withWater ? 12 : 10;
+  const totalCol = withWater ? 13 : 10;
   // Colonne Total heures = index totalCol-1 (0-based) = lettre Excel
   // rows[0]=MOIS, rows[1]=vide, rows[2]=headers → Excel ligne 3
   // données : rows[3] à rows[3 + daysInMonth*n - 1]
   // Ligne de début des données en Excel = 4, fin = rows.length (avant la ligne vide et total)
   const dataStartRow = 4; // Excel 1-based
   const dataEndRow   = rows.length; // après le rows.push([]) vide, avant total
-  const colLetter    = withWater ? 'K' : 'I'; // Total heures column letter
+  const colLetter    = withWater ? 'L' : 'I'; // Total heures column letter
   const totalRow = new Array(totalCol).fill('');
   totalRow[totalCol - 2] = 'TOTAL';
   totalRow[totalCol - 1] = { f: 'SUM(' + colLetter + dataStartRow + ':' + colLetter + dataEndRow + ')' };
@@ -1634,7 +1661,7 @@ function exportExcel(withWater = true) {
 
   const ws = XLSX.utils.aoa_to_sheet(rows);
   const colWidths = withWater
-    ? [12,18,14,10,10,20,14,12,8,10,14,30]
+    ? [12,18,14,10,12,10,20,14,12,8,10,14,30]
     : [12,18,14,20,14,12,8,10,14,30];
   ws['!cols'] = colWidths.map(w => ({wch:w}));
   XLSX.utils.book_append_sheet(wb, ws, monthName);
@@ -2139,14 +2166,23 @@ async function renderStats() {
   });
   const parcelleEntries = Object.entries(parcelleMap).sort((a,b) => b[1]-a[1]);
 
-  // ── Pluvio
-  const pluvioData  = data.filter(e => e.precipitation != null && e.precipitation > 0);
-  const totalPrecip = pluvioData.reduce((s,e) => s + (e.precipitation||0), 0);
-  const joursPluie  = [...new Set(pluvioData.map(e => e.date))].length;
+  // ── Pluvio — 4 sources distinctes
+  const pluvioManuel   = data.filter(e => e.precipitation != null && !e.precipSource);
+  const pluvioEstime   = data.filter(e => e.precipitation != null && e.precipSource === 'forecast');
+  const pluvioConfirme = data.filter(e => e.precipitation != null && e.precipSource === 'confirmed');
+  const totalManuel    = pluvioManuel.reduce((s,e) => s + (e.precipitation||0), 0);
+  const totalEstime    = pluvioEstime.reduce((s,e) => s + (e.precipitation||0), 0);
+  const totalConfirme  = pluvioConfirme.reduce((s,e) => s + (e.precipitation||0), 0);
+  const joursPluie     = [...new Set(data.filter(e => e.precipitation != null && e.precipitation > 0).map(e => e.date))].length;
 
-  // ── Météo répartition
+  // ── Météo répartition — 1 seul comptage par jour (première saisie)
   const meteoMap = {};
-  data.forEach(e => { const k = e.meteo; meteoMap[k] = (meteoMap[k]||0) + 1; });
+  const meteoDatesSeen = new Set();
+  data.forEach(e => {
+    if (meteoDatesSeen.has(e.date)) return; // on ignore les saisies suivantes du même jour
+    meteoDatesSeen.add(e.date);
+    const k = e.meteo; meteoMap[k] = (meteoMap[k]||0) + 1;
+  });
 
   // ── Tâches
   const tacheHMap  = {}; // heures par tâche
@@ -2275,14 +2311,21 @@ async function renderStats() {
     <div class="stat-section">
       <div class="stat-section-title">🌧️ Pluviométrie <span id="era5-loading" style="font-size:0.7rem;color:var(--text2);font-weight:400;"></span></div>
       <div class="stat-kpi-grid" id="pluvio-kpi">
-        <div class="stat-kpi-card"><div class="stat-kpi-label">Total précip. (saisies)</div><div class="stat-kpi-val">${totalPrecip.toFixed(1)}<span style="font-size:1rem"> mm</span></div><div class="stat-kpi-sub">🟡 données saisies</div></div>
-        <div class="stat-kpi-card"><div class="stat-kpi-label">Jours de pluie</div><div class="stat-kpi-val">${joursPluie}<span style="font-size:1rem"> j</span></div></div>
+        <div class="stat-kpi-card"><div class="stat-kpi-label">🖊️ Saisi manuellement</div><div class="stat-kpi-val">${totalManuel.toFixed(1)}<span style="font-size:1rem"> mm</span></div></div>
+        <div class="stat-kpi-card"><div class="stat-kpi-label">🟡 Estimé Open-Meteo</div><div class="stat-kpi-val">${totalEstime.toFixed(1)}<span style="font-size:1rem"> mm</span></div><div class="stat-kpi-sub">prévision, pas encore confirmé</div></div>
+        <div class="stat-kpi-card"><div class="stat-kpi-label">🔵 Réel Météo-France</div><div class="stat-kpi-val">${totalConfirme.toFixed(1)}<span style="font-size:1rem"> mm</span></div><div class="stat-kpi-sub">données officielles confirmées</div></div>
+        <div class="stat-kpi-card"><div class="stat-kpi-label">☔ Jours de pluie</div><div class="stat-kpi-val">${joursPluie}<span style="font-size:1rem"> j</span></div><div class="stat-kpi-sub">jours avec précip > 0</div></div>
+        <div class="stat-kpi-card" style="grid-column:1/-1;border:1.5px dashed var(--border);opacity:0.7;" id="era5-placeholder">
+          <div class="stat-kpi-label">📊 ERA5 — toute la période</div>
+          <div class="stat-kpi-val" id="era5-val">—</div>
+          <div class="stat-kpi-sub" id="era5-sub">⏳ chargement...</div>
+        </div>
       </div>
     </div>
 
     <!-- MÉTÉO -->
     <div class="stat-section">
-      <div class="stat-section-title">☀️ Répartition météo</div>
+      <div class="stat-section-title">☀️ Répartition météo <span style="font-size:0.65rem;font-weight:400;color:var(--text2);">(1 comptage par jour)</span></div>
       <div class="stat-meteo-grid">
         ${Object.entries(meteoMap).sort((a,b)=>b[1]-a[1]).map(([m,n]) => `
           <div class="stat-meteo-chip">
@@ -2297,11 +2340,16 @@ async function renderStats() {
 }
 
 async function loadERA5ForStats() {
-  const loadEl = document.getElementById('era5-loading');
-  if (!loadEl || !gpsLat) {
+  const loadEl  = document.getElementById('era5-loading');
+  const valEl   = document.getElementById('era5-val');
+  const subEl   = document.getElementById('era5-sub');
+  const cardEl  = document.getElementById('era5-placeholder');
+
+  if (!valEl || !gpsLat) {
+    if (cardEl) cardEl.style.display = 'none';
     return;
   }
-  loadEl.textContent = '⏳ données réelles...';
+
   const d = statPeriod.refDate;
   let dateStart, dateEnd;
   if (statPeriod.filter === 'week') {
@@ -2315,32 +2363,36 @@ async function loadERA5ForStats() {
     dateStart = d.getFullYear() + '-01-01';
     dateEnd   = d.getFullYear() + '-12-31';
   }
+
   const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 5);
   const cutoffStr = cutoff.toISOString().split('T')[0];
-  if (new Date(dateEnd) > cutoff) {
-    dateEnd = cutoffStr;
-  }
+  if (new Date(dateEnd) > cutoff) dateEnd = cutoffStr;
+
   if (dateStart > dateEnd) {
-    loadEl.textContent = '(pas encore disponible)';
+    valEl.textContent = '—';
+    subEl.textContent = 'Données pas encore disponibles (délai 5j)';
+    if (cardEl) { cardEl.style.opacity = '0.5'; cardEl.style.border = '1.5px dashed var(--border)'; }
     return;
   }
+
   const era5 = await fetchERA5Precip(dateStart, dateEnd);
-  loadEl.textContent = '';
+
   if (!era5) {
+    valEl.textContent = '—';
+    subEl.textContent = 'Erreur de chargement ERA5';
     return;
   }
+
   const totalERA5 = Object.values(era5).reduce((s, v) => s + (v || 0), 0);
   const joursERA5 = Object.values(era5).filter(v => v > 0).length;
-  const kpiEl = document.getElementById('pluvio-kpi');
-  if (!kpiEl) return;
-  const card = document.createElement('div');
-  card.className = 'stat-kpi-card';
-  card.style.gridColumn = '1/-1';
-  card.style.borderColor = 'var(--green)';
-  card.innerHTML = '<div class="stat-kpi-label">Total réel ERA5 🔵</div>'
-    + '<div class="stat-kpi-val">' + totalERA5.toFixed(1) + '<span style="font-size:1rem"> mm</span></div>'
-    + '<div class="stat-kpi-sub">' + joursERA5 + ' j de pluie · Open-Meteo ERA5 (données réelles)</div>';
-  kpiEl.appendChild(card);
+
+  valEl.innerHTML = totalERA5.toFixed(1) + '<span style="font-size:1rem"> mm</span>';
+  subEl.textContent = joursERA5 + ' j de pluie · Open-Meteo ERA5 · ' + dateStart + ' → ' + dateEnd;
+  if (cardEl) {
+    cardEl.style.opacity = '1';
+    cardEl.style.border = '1.5px solid var(--green)';
+    cardEl.style.gridColumn = '1/-1';
+  }
 }
 
 // ══════════════════════════════════════
@@ -2492,6 +2544,42 @@ async function fetchERA5Precip(dateStart, dateEnd) {
     data.daily.time.forEach((d, i) => { result[d] = data.daily.precipitation_sum[i] ?? 0; });
     return result;
   } catch(e) { return null; }
+}
+
+// ══════════════════════════════════════
+// DEBUG NOTIFICATIONS
+// ══════════════════════════════════════
+async function testNotification() {
+  const result = document.getElementById('notif-debug-result');
+  if (!('Notification' in window)) {
+    result.textContent = '❌ Notifications non supportées sur ce navigateur';
+    result.style.color = 'var(--rose)';
+    return;
+  }
+  if (Notification.permission === 'denied') {
+    result.textContent = '❌ Notifications bloquées — autorise-les dans les réglages du navigateur';
+    result.style.color = 'var(--rose)';
+    return;
+  }
+  if (Notification.permission === 'default') {
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') {
+      result.textContent = '❌ Permission refusée';
+      result.style.color = 'var(--rose)';
+      return;
+    }
+  }
+  try {
+    new Notification('🔔 JDay LCN — Test notification', {
+      body: 'Si tu vois ceci, les notifications fonctionnent correctement ! 🎉',
+      icon: './icon-192.png'
+    });
+    result.textContent = '✅ Notification envoyée ! Tu devrais la voir apparaître.';
+    result.style.color = 'var(--green)';
+  } catch(e) {
+    result.textContent = '❌ Erreur : ' + e.message;
+    result.style.color = 'var(--rose)';
+  }
 }
 
 // ══════════════════════════════════════
