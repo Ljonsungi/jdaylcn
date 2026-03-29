@@ -1747,6 +1747,8 @@ function importJSON(event) {
       if (imported.mf_token_clim) { mfTokenClim = imported.mf_token_clim; localStorage.setItem('agro_mf_token_clim', mfTokenClim); }
       renderSettingsStats();
       showToast('✅ Données importées !');
+      // Relancer la consolidation après import
+      setTimeout(() => consolidatePrecipitations(), 1000);
     } catch(err) {
       showToast('❌ Fichier JSON invalide');
     }
@@ -2514,7 +2516,13 @@ async function getMFNearestStation() {
 async function consolidatePrecipitations() {
   if (!mfTokenObs) { console.log('[MF] Pas de token — consolidation ignorée'); return; }
   const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 2);
-  const toConsolidate = entries.filter(e => e.precipitation != null && e.precipSource === 'forecast' && new Date(e.date) < cutoff);
+  // Lire depuis localStorage pour avoir les données les plus récentes (après import)
+  const currentEntries = JSON.parse(localStorage.getItem('agro_entries') || '[]');
+  const toConsolidate = currentEntries.filter(e =>
+    e.precipitation != null &&
+    (e.precipSource === 'forecast' || e.precipSource == null) &&
+    new Date(e.date) < cutoff
+  );
   console.log('[MF] Saisies à consolider :', toConsolidate.length, toConsolidate.map(e => e.date));
   if (!toConsolidate.length) { console.log('[MF] Rien à consolider'); return; }
   const stationId = await getMFNearestStation();
@@ -2537,12 +2545,20 @@ async function consolidatePrecipitations() {
       console.log('[MF] Données reçues pour', entry.date, ':', data?.length, 'obs — extrait:', JSON.stringify(data?.[0]));
       const total = data.reduce((s, o) => { const v = parseFloat(o.rr ?? o.RR ?? 0); return s + (isNaN(v) ? 0 : v); }, 0);
       console.log('[MF] Total précip calculé pour', entry.date, ':', total, 'mm');
+      // Mettre à jour dans entries (mémoire) ET dans currentEntries
       const idx = entries.findIndex(e => e.id === entry.id);
-      if (idx !== -1) { entries[idx].precipitation = parseFloat(total.toFixed(1)); entries[idx].precipSource = 'confirmed'; consolidated++; }
+      if (idx !== -1) { entries[idx].precipitation = parseFloat(total.toFixed(1)); entries[idx].precipSource = 'confirmed'; }
+      const idx2 = currentEntries.findIndex(e => e.id === entry.id);
+      if (idx2 !== -1) { currentEntries[idx2].precipitation = parseFloat(total.toFixed(1)); currentEntries[idx2].precipSource = 'confirmed'; consolidated++; }
     } catch(e) { console.error('[MF] Exception pour', entry.date, ':', e.message); }
   }
   console.log('[MF] Consolidation terminée :', consolidated, 'saisie(s) mises à jour');
-  if (consolidated > 0) { save(); showToast('🔵 ' + consolidated + ' précip. consolidée(s) via MF'); }
+  if (consolidated > 0) {
+    // Sauvegarder les deux (mémoire + localStorage)
+    localStorage.setItem('agro_entries', JSON.stringify(currentEntries));
+    entries = currentEntries; // synchroniser la variable mémoire
+    showToast('🔵 ' + consolidated + ' précip. consolidée(s) via MF');
+  }
 }
 
 // ══════════════════════════════════════
